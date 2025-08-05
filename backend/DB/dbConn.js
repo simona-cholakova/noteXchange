@@ -73,5 +73,11 @@ dataPool.getAllUsers = () => {
   });
 };
 
+dataPool.logout = () => {
+  return new Promise((resolve, reject) => {
+    conn.query()
+  })
+}
+
 
 module.exports = dataPool;

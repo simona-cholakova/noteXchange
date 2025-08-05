@@ -12,7 +12,8 @@ router.post('/login', async (req, res) => {
             id: user.id,
             enrolment_id: user.enrolment_id,
             name: user.name,
-            username: user.username
+            username: user.username,
+            role: user.role 
         };
         res.json({ message: 'Login successful', user: req.session.user });
     } catch (err) {
@@ -56,5 +57,24 @@ router.get('/users', async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch users', error: err.message });
     }
 });
+
+
+// HOMEPAGE ROUTE
+router.get('/homepage', (req, res) => {
+    const user = req.session.user;
+
+    if (!user) {
+        return res.status(401).json({ message: 'Not logged in' });
+    }
+
+    if (user.role === 'provider') {
+        res.json({ homepage: 'provider', message: 'Welcome, Provider!' });
+    } else if (user.role === 'student' || user.role === 'pending') {
+        res.json({ homepage: 'student', message: 'Welcome, Student or Pending!' });
+    } else {
+        res.status(400).json({ message: 'Unknown role' });
+    }
+});
+
 
 module.exports = router;

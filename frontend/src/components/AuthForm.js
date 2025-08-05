@@ -30,7 +30,19 @@ const AuthForm = ({ type }) => {
                     enrolment_id: formData.enrolment_id,
                     password: formData.password
                 });
-                navigate('/');
+
+                // 👇 Fetch homepage data based on role
+                const homepageRes = await fetch('http://88.200.63.148:9333/api/homepage', {
+                    credentials: 'include'
+                });
+                const homepageData = await homepageRes.json();
+
+                if (homepageData.homepage === 'provider') {
+                    navigate('/provider-home');
+                } else {
+                    navigate('/student-home');
+                }
+
             } else {
                 await register(formData);
                 navigate('/login');
@@ -39,6 +51,7 @@ const AuthForm = ({ type }) => {
             setError(err.response?.data?.message || 'Something went wrong');
         }
     };
+
 
     return (
         <div className="auth-form-container">
