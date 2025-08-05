@@ -1,19 +1,37 @@
-const express = require("express")
-const login = express.Router();
-const datapool = require('../DB/dbConn.js');
+const express = require("express");
 const router = express.Router();
+const datapool = require('../DB/dbConn.js');
 
+// LOGIN
 router.post('/login', async (req, res) => {
     const { enrolment_id, password } = req.body;
 
     try {
         const user = await datapool.login(enrolment_id, password);
-        res.status(200).json({ message: "Login successful", user });
+        req.session.user = {
+            id: user.id,
+            enrolment_id: user.enrolment_id,
+            name: user.name,
+            username: user.username
+        };
+        res.json({ message: 'Login successful', user: req.session.user });
     } catch (err) {
         res.status(401).json({ message: err.message });
     }
 });
 
+// LOGOUT
+router.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ error: 'Logout failed' });
+        }
+        res.clearCookie('connect.sid');
+        res.json({ message: 'Logout successful' });
+    });
+});
+
+// REGISTER
 router.post('/register', async (req, res) => {
     const { enrolment_id, name, surname, email, username, password } = req.body;
 
@@ -29,6 +47,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// GET ALL USERS
 router.get('/users', async (req, res) => {
     try {
         const users = await datapool.getAllUsers();
@@ -38,7 +57,4 @@ router.get('/users', async (req, res) => {
     }
 });
 
-
 module.exports = router;
-
-
