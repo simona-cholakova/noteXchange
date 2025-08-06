@@ -13,12 +13,12 @@ const conn = mysql.createConnection({
 
 let dataPool = {}
 
-dataPool.publishStudyMaterial = (title, description, provider_name, file, type, academic_year, study_program, university) => {
+dataPool.publishStudyMaterial = (title, description, provider_name, file, type, academic_year, study_program, university, course) => {
   return new Promise((resolve, reject) => {
     conn.query(
-      `INSERT INTO StudyMaterial (title, description, provider_name, file, type, academic_year, study_program, university) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [title, description, provider_name, file, type, academic_year, study_program, university],
+      `INSERT INTO StudyMaterial (title, description, provider_name, file, type, academic_year, study_program, university, course) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [title, description, provider_name, file, type, academic_year, study_program, university, course],
       (err, res) => {
         if (err) return reject(err);
         return resolve(res);
@@ -81,6 +81,16 @@ dataPool.logout = () => {
     conn.query()
   })
 }
+
+dataPool.getAllStudyMaterials = () => {
+  return new Promise((resolve, reject) => {
+    conn.query('SELECT material_id, title, description, provider_name, type, academic_year, study_program, university, course FROM StudyMaterial', 
+    (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+};
 
 
 module.exports = dataPool;

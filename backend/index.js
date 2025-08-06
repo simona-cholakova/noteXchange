@@ -5,7 +5,8 @@ const session = require('express-session');
 const datapool = require('./DB/dbConn.js');
 const loginRoutes = require('./routes/login');
 const cors = require('cors');
-const materialsRoutes = require('./routes/materials');
+const materialsProviderRoutes = require('./routes/materialsProvider');
+const materialsStudentRoutes = require('./routes/materialsStudent');
 
 const port = 9333;
 
@@ -47,7 +48,7 @@ app.use(session({
 
 // Routes
 app.use('/api', loginRoutes);
-app.use('/api/materials', materialsRoutes);
+app.use('/api/materials', materialsProviderRoutes);
 
 app.get('/', (req, res) => {
   res.send('hola');
