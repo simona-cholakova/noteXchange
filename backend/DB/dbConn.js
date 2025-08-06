@@ -13,16 +13,19 @@ const conn = mysql.createConnection({
 
 let dataPool = {}
 
-dataPool.publishStudyMaterial = (material_type, title, status, academic_year, study_program, university, description, c_id) => {
+dataPool.publishStudyMaterial = (title, description, provider_name, file, type, academic_year, study_program, university) => {
   return new Promise((resolve, reject) => {
-    conn.query(`INSERT INTO Study_Material (material_type, title, status, academic_year, study_program, university, description, c_id) 
-      VALUES (?,?,?,?,?,?,?,?)`, [material_type, title, status, academic_year, study_program, university, description, c_id],
+    conn.query(
+      `INSERT INTO StudyMaterial (title, description, provider_name, file, type, academic_year, study_program, university) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [title, description, provider_name, file, type, academic_year, study_program, university],
       (err, res) => {
-        if (err) { return reject(err) }
-        return resolve(res)
-      })
-  })
-}
+        if (err) return reject(err);
+        return resolve(res);
+      }
+    );
+  });
+};
 
 dataPool.register = (enrolment_id, name, surname, email, username, password) => {
   return new Promise((resolve, reject) => {

@@ -3,8 +3,9 @@ const app = express();
 require('dotenv').config();
 const session = require('express-session');
 const datapool = require('./DB/dbConn.js');
-const loginRoutes = require('./routes/login'); 
+const loginRoutes = require('./routes/login');
 const cors = require('cors');
+const materialsRoutes = require('./routes/materials');
 
 const port = 9333;
 
@@ -15,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
   'http://88.200.63.148:3000',
   'http://88.200.63.148:3001',
-  'http://88.200.63.148:3002', 
+  'http://88.200.63.148:3002',
   'http://88.200.63.148:3003',
   'http://88.200.63.148:3004',
   'http://88.200.63.148:3005',
@@ -38,14 +39,15 @@ app.use(cors({
 }));
 
 app.use(session({
-  secret: 'your-secret-key', 
+  secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } //true if using HTTPS
 }));
 
 // Routes
-app.use('/api', loginRoutes); 
+app.use('/api', loginRoutes);
+app.use('/api/materials', materialsRoutes);
 
 app.get('/', (req, res) => {
   res.send('hola');
