@@ -3,7 +3,8 @@ import { login, register } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
 import '../styles/AuthForm.css';
 
-const AuthForm = ({ type }) => {
+const AuthForm = () => {
+    const [type, setType] = useState('login');
     const [formData, setFormData] = useState({
         enrolment_id: '',
         name: '',
@@ -12,7 +13,6 @@ const AuthForm = ({ type }) => {
         username: '',
         password: ''
     });
-
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -31,7 +31,6 @@ const AuthForm = ({ type }) => {
                     password: formData.password
                 });
 
-                // 👇 Fetch homepage data based on role
                 const homepageRes = await fetch('http://88.200.63.148:9333/api/homepage', {
                     credentials: 'include'
                 });
@@ -52,30 +51,90 @@ const AuthForm = ({ type }) => {
         }
     };
 
-
     return (
-        <div className="auth-form-container">
-            <form className="auth-form" onSubmit={handleSubmit}>
-                <h2>{isLogin ? 'Login' : 'Register'}</h2>
+        <div className="auth-form-wrapper">
+            <form className="auth-form-card" onSubmit={handleSubmit}>
+                <h2>Login Form</h2>
 
-                <input type="text" name="enrolment_id" placeholder="Enrolment ID" onChange={handleChange} required />
+                <div className="tab-buttons">
+                    <button
+                        type="button"
+                        className={isLogin ? 'active' : ''}
+                        onClick={() => setType('login')}
+                    >
+                        Login
+                    </button>
+                    <button
+                        type="button"
+                        className={!isLogin ? 'active' : ''}
+                        onClick={() => setType('register')}
+                    >
+                        Signup
+                    </button>
+                </div>
+
+                <input
+                    type="text"
+                    name="enrolment_id"
+                    placeholder="Enrolment ID"
+                    onChange={handleChange}
+                    required
+                />
+
                 {!isLogin && (
                     <>
-                        <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
-                        <input type="text" name="surname" placeholder="Surname" onChange={handleChange} required />
-                        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-                        <input type="text" name="username" placeholder="Username" onChange={handleChange} required />
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Name"
+                            onChange={handleChange}
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="surname"
+                            placeholder="Surname"
+                            onChange={handleChange}
+                            required
+                        />
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            onChange={handleChange}
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            onChange={handleChange}
+                            required
+                        />
                     </>
                 )}
-                <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
 
-                {error && <p>{error}</p>}
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    onChange={handleChange}
+                    required
+                />
 
-                <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+                {isLogin && <a className="forgot-password" href="#">Forgot password?</a>}
+                {error && <p className="error-msg">{error}</p>}
+
+                <button className="submit-btn" type="submit">
+                    {isLogin ? 'Login' : 'Register'}
+                </button>
+
+                <p className="toggle-link">
+                    {isLogin ? "Not a member?" : "Already have an account?"} <span onClick={() => setType(isLogin ? 'register' : 'login')}>{isLogin ? "Signup now" : "Login"}</span>
+                </p>
             </form>
         </div>
     );
-
 };
 
 export default AuthForm;

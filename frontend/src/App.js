@@ -7,9 +7,9 @@ import StudentHome from './pages/StudentHome';
 function App() {
   return (
     <Router>
-      <nav>
+      {/* <nav>
         <Link to="/login">Login</Link> | <Link to="/register">Register</Link>
-      </nav>
+      </nav> */}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
