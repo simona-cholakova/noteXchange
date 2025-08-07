@@ -84,13 +84,75 @@ dataPool.logout = () => {
 
 dataPool.getAllStudyMaterials = () => {
   return new Promise((resolve, reject) => {
-    conn.query('SELECT material_id, title, description, provider_name, type, academic_year, study_program, university, course FROM StudyMaterial', 
-    (err, results) => {
+    conn.query('SELECT material_id, title, description, provider_name, type, academic_year, study_program, university, course FROM StudyMaterial',
+      (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+      });
+  });
+};
+
+
+// ----SEARCH FUNCTIONS FOR THE FILTER----
+
+dataPool.searchByCourse = (course) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM StudyMaterial WHERE course LIKE ?`;
+    const values = [`%${course}%`];
+
+    conn.query(query, values, (err, results) => {
       if (err) return reject(err);
       resolve(results);
     });
   });
 };
 
+dataPool.searchByYear = (academic_year) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM StudyMaterial WHERE academic_year LIKE ?`;
+    const values = [`%${academic_year}%`];
+
+    conn.query(query, values, (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+};
+
+dataPool.searchByStudyProgram = (study_program) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM StudyMaterial WHERE study_program LIKE ?`;
+    const values = [`%${study_program}%`];
+
+    conn.query(query, values, (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+};
+
+dataPool.searchByProvider = (provider_name) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM StudyMaterial WHERE provider_name LIKE ?`;
+    const values = [`%${provider_name}%`];
+
+    conn.query(query, values, (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+};
+
+dataPool.searchByUniversity = (university) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM StudyMaterial WHERE university LIKE ?`;
+    const values = [`%${university}%`];
+
+    conn.query(query, values, (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+};
 
 module.exports = dataPool;
