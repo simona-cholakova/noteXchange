@@ -34,7 +34,7 @@ router.get('/provider', async (req, res) => {
 
 router.get('/year', async (req, res) => {
   try {
-    const year = req.query.year;
+    const year = req.query.name;
     const results = await dataPool.searchByYear(year);
     res.json(results);
   } catch (err) {

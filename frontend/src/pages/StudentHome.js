@@ -1,12 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import '../styles/StudentHome.css';
 
 export default function StudentHome() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [results, setResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('Course'); // Default filter
+
+  useEffect(() => {
+    if (!searchTerm) {
+      setResults([]);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(() => {
+      const filterMap = {
+        'Course': 'course',
+        'University': 'university',
+        'Provider': 'provider',
+        'Academic Year': 'year',
+        'Study Program': 'program',
+      };
+
+      const apiFilter = filterMap[selectedFilter] || 'course';
+      const url = `http://88.200.63.148:9333/api/filters/${apiFilter}?name=${encodeURIComponent(searchTerm)}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          console.log('Search results:', data);
+          setResults(data);
+        })
+        .catch(err => console.error('Error fetching:', err));
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, selectedFilter]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-    console.log('Searching for:', e.target.value);
   };
 
   const toggleDropdown = () => {
@@ -14,9 +46,10 @@ export default function StudentHome() {
   };
 
   const handleFilterSelect = (filter) => {
-    console.log('Selected filter:', filter);
+    setSelectedFilter(filter);
+    setSearchTerm('');
+    setResults([]);
     setShowDropdown(false);
-    // TODO: Add logic to apply the selected filter
   };
 
   return (
@@ -26,7 +59,7 @@ export default function StudentHome() {
       <div style={{ display: 'flex', gap: '10px', marginTop: '20px', position: 'relative' }}>
         <input
           type="text"
-          placeholder="Search materials by course name..."
+          placeholder={`Search materials by ${selectedFilter.toLowerCase()}...`}
           value={searchTerm}
           onChange={handleSearch}
           style={{
@@ -48,7 +81,7 @@ export default function StudentHome() {
           </button>
 
           {showDropdown && (
-            <ul 
+            <ul
               style={{
                 position: 'absolute',
                 top: '100%',
@@ -63,7 +96,7 @@ export default function StudentHome() {
                 zIndex: 1000,
               }}
             >
-              {['University', 'Provider', 'Academic Year', 'Study Program'].map(option => (
+              {['University', 'Provider', 'Academic Year', 'Study Program', 'Course'].map(option => (
                 <li
                   key={option}
                   onClick={() => handleFilterSelect(option)}
@@ -81,6 +114,20 @@ export default function StudentHome() {
             </ul>
           )}
         </div>
+      </div>
+
+      <div className="search-results">
+        {results.map((item, idx) => (
+          <div
+            key={idx}
+            className="material-card"
+            onClick={() => console.log('Clicked:', item)} // Navigation later
+          >
+            <h3 className="material-title">{item.title}</h3>
+            <p className="material-meta"><strong>Provider:</strong> {item.provider_name}</p>
+            <p className="material-meta"><strong>Course:</strong> {item.course}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
