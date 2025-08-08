@@ -12,6 +12,7 @@ router.post('/login', async (req, res) => {
             id: user.id,
             enrolment_id: user.enrolment_id,
             name: user.name,
+            surname: user.surname,
             username: user.username,
             role: user.role 
         };

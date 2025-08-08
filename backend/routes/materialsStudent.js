@@ -14,4 +14,3 @@ router.get('/all', (req, res) => {
     });
 });
 
-

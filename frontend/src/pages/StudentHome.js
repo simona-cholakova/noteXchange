@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';  // import navigate
 import '../styles/StudentHome.css';
+import { Link } from 'react-router-dom';
+
 
 export default function StudentHome() {
+  const navigate = useNavigate();  // init navigate
+
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState('Course'); // Default filter
+  const [selectedFilter, setSelectedFilter] = useState('Course');
 
   useEffect(() => {
     if (!searchTerm) {
@@ -28,7 +33,6 @@ export default function StudentHome() {
       fetch(url)
         .then(res => res.json())
         .then(data => {
-          console.log('Search results:', data);
           setResults(data);
         })
         .catch(err => console.error('Error fetching:', err));
@@ -52,11 +56,22 @@ export default function StudentHome() {
     setShowDropdown(false);
   };
 
+  // New handler to navigate to MyProfile page
+  const goToMyProfile = () => {
+    navigate('./profile');
+  };
+
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px', position: 'relative' }}>
+      {/* My Profile button top right */}
+      <Link to="/profile" style={{position: 'absolute', top: 20, right: 20, padding: '8px 16px', fontSize: '14px', cursor: 'pointer', borderRadius: '4px', border: '1px solid #007bff', backgroundColor: 'white', color: '#007bff', fontWeight: 'bold', textDecoration: 'none'}}>
+  My Profile
+</Link>
+
+
       <h1>Student Home Page</h1>
 
-      <div style={{ display: 'flex', gap: '10px', marginTop: '20px', position: 'relative' }}>
+      <div style={{ display: 'flex', gap: '10px', marginTop: '60px', position: 'relative' }}>
         <input
           type="text"
           placeholder={`Search materials by ${selectedFilter.toLowerCase()}...`}

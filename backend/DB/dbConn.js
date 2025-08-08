@@ -12,6 +12,37 @@ const conn = mysql.createConnection({
 });
 
 let dataPool = {}
+dataPool.getUserById = (enrolment_id) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `SELECT enrolment_id, name, surname, email, username, role 
+       FROM User 
+       WHERE TRIM(enrolment_id) = ?`,
+      [enrolment_id.toString()],
+      (err, results) => {
+        if (err) return reject(err);
+        if (results.length === 0) {
+          return resolve(null); // user not found
+        }
+        resolve(results[0]);
+      }
+    );
+  });
+};
+
+dataPool.updateUserProfilePicture = (userId, imageUrl) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      'UPDATE User SET picture_url = ? WHERE enrolment_id = ?',
+      [imageUrl, userId],
+      (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      }
+    );
+  });
+};
+
 
 dataPool.publishStudyMaterial = (title, description, provider_name, file, type, academic_year, study_program, university, course) => {
   return new Promise((resolve, reject) => {
@@ -92,6 +123,23 @@ dataPool.getAllStudyMaterials = () => {
   });
 };
 
+dataPool.getUserData = async function (enrolmentNumber) {
+  try {
+    const [rows] = await conn.promise().execute(
+      `SELECT name, surname, role, university, academic_year, study_program, picture_url FROM User WHERE TRIM(enrolment_id) = ?`,
+      [enrolmentNumber.toString()]
+    );
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    return rows[0];
+  } catch (err) {
+    console.error('Error fetching user data:', err.message);
+    return null;
+  }
+};
 
 // ----SEARCH FUNCTIONS FOR THE FILTER----
 

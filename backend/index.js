@@ -8,6 +8,8 @@ const cors = require('cors');
 const materialsProviderRoutes = require('./routes/materialsProvider');
 const materialsStudentRoutes = require('./routes/materialsStudent');
 const filtersRoutes = require('./routes/filters');
+const userRoutes = require('./routes/user');
+const multerRoutes = require('./routes/multer');
 
 const port = 9333;
 
@@ -51,6 +53,8 @@ app.use(session({
 app.use('/api', loginRoutes);
 app.use('/api/materials', materialsProviderRoutes);
 app.use('/api/filters', filtersRoutes);
+app.use('/api', userRoutes);
+app.use('/api', multerRoutes);
 
 app.get('/', (req, res) => {
   res.send('hola');

@@ -26,10 +26,16 @@ const AuthForm = () => {
         e.preventDefault();
         try {
             if (isLogin) {
-                await login({
+                const loginResponse = await login({
                     enrolment_id: formData.enrolment_id,
                     password: formData.password
                 });
+
+                // Assuming loginResponse is the parsed JSON response with a `user` object:
+                if (loginResponse.user) {
+                    // Save user info (with enrolment_id etc.) to localStorage
+                    localStorage.setItem('user', JSON.stringify(loginResponse.user));
+                }
 
                 const homepageRes = await fetch('http://88.200.63.148:9333/api/homepage', {
                     credentials: 'include'
@@ -50,6 +56,7 @@ const AuthForm = () => {
             setError(err.response?.data?.message || 'Something went wrong');
         }
     };
+
 
     return (
         <div className="auth-form-wrapper">
