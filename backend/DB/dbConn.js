@@ -12,6 +12,7 @@ const conn = mysql.createConnection({
 });
 
 let dataPool = {}
+
 dataPool.getUserById = (enrolment_id) => {
   return new Promise((resolve, reject) => {
     conn.query(
@@ -30,7 +31,6 @@ dataPool.getUserById = (enrolment_id) => {
   });
 };
 
-
 dataPool.updateUserPicture = (userId, pictureUrl) => {
   return new Promise((resolve, reject) => {
     conn.query(
@@ -44,13 +44,13 @@ dataPool.updateUserPicture = (userId, pictureUrl) => {
   });
 };
 
-
-dataPool.publishStudyMaterial = (title, description, provider_name, file, type, academic_year, study_program, university, course) => {
+dataPool.publishStudyMaterial = (title, description, provider_enrolment_id, provider_name, provider_surname, file, type, academic_year, study_program, university, course) => {
   return new Promise((resolve, reject) => {
     conn.query(
-      `INSERT INTO StudyMaterial (title, description, provider_name, file, type, academic_year, study_program, university, course) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [title, description, provider_name, file, type, academic_year, study_program, university, course],
+      `INSERT INTO StudyMaterial 
+      (title, description, provider_enrolment_id, provider_name, provider_surname, file, type, academic_year, study_program, university, course) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [title, description, provider_enrolment_id, provider_name, provider_surname, file, type, academic_year, study_program, university, course],
       (err, res) => {
         if (err) return reject(err);
         return resolve(res);
@@ -59,24 +59,56 @@ dataPool.publishStudyMaterial = (title, description, provider_name, file, type, 
   });
 };
 
+
+// dataPool.getStudyMaterialById = (material_id) => {
+//   return new Promise((resolve, reject) => {
+//     const query = `
+//       SELECT 
+//         material_id, 
+//         title, 
+//         description, 
+//         provider_name, 
+//         file, 
+//         type, 
+//         academic_year, 
+//         study_program, 
+//         university, 
+//         course, 
+//         created_at
+//       FROM StudyMaterial
+//       WHERE material_id = ?
+//     `;
+
+//     conn.query(query, [material_id], (err, results) => {
+//       if (err) return reject(err);
+//       if (results.length === 0) return resolve(null);
+//       resolve(results[0]);
+//     });
+//   });
+// };
+
 dataPool.getStudyMaterialById = (material_id) => {
   return new Promise((resolve, reject) => {
     const query = `
-      SELECT 
-        material_id, 
-        title, 
-        description, 
-        provider_name, 
-        file, 
-        type, 
-        academic_year, 
-        study_program, 
-        university, 
-        course, 
-        created_at
-      FROM StudyMaterial
-      WHERE material_id = ?
-    `;
+  SELECT 
+    sm.material_id, 
+    sm.title, 
+    sm.description, 
+    sm.file, 
+    sm.type, 
+    sm.academic_year, 
+    sm.study_program, 
+    sm.university, 
+    sm.course, 
+    sm.created_at,
+    u.enrolment_id AS provider_enrolment_id,
+    u.name AS provider_name,
+    u.surname AS provider_surname,
+    u.role AS provider_role
+  FROM StudyMaterial sm
+  LEFT JOIN User u ON sm.provider_enrolment_id = u.enrolment_id
+  WHERE sm.material_id = ?
+`;
 
     conn.query(query, [material_id], (err, results) => {
       if (err) return reject(err);
@@ -85,6 +117,7 @@ dataPool.getStudyMaterialById = (material_id) => {
     });
   });
 };
+
 
 dataPool.register = (enrolment_id, name, surname, email, username, password) => {
   return new Promise((resolve, reject) => {

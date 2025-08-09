@@ -5,6 +5,7 @@ import ProviderHome from './pages/ProviderHome';
 import StudentHome from './pages/StudentHome';
 import MyProfilePage from './pages/MyProfilePage';
 import InsideCard from './pages/InsideCard';
+import ProviderProfile from './pages/ProviderProfile';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/student-home" element={<StudentHome />} />
         <Route path="/profile" element={<MyProfilePage />} />
         <Route path="/material/:id" element={<InsideCard />} />
+        <Route path="/providers/:enrolment_id" element={<ProviderProfile />} />
         <Route path="/" element={<h1>Welcome Home</h1>} />
       </Routes>
     </Router>

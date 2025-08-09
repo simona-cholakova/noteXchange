@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';  // <-- import Link here
 
 const InsideCard = () => {
   const { id } = useParams(); // material_id from URL
@@ -9,13 +9,12 @@ const InsideCard = () => {
   useEffect(() => {
     const fetchMaterial = async () => {
       try {
-        const res = await fetch(`http://88.200.63.148:9333/api/materials/${id}`, {
+        const res = await fetch(`http://88.200.63.148:9333/api/material/${id}`, {
           credentials: 'include',
         });
         if (!res.ok) throw new Error('Failed to fetch material');
         const data = await res.json();
 
-        // Fix: Make sure downloadUrl is full URL
         if (data.downloadUrl && !data.downloadUrl.startsWith('http')) {
           data.downloadUrl = `http://88.200.63.148:9333${data.downloadUrl}`;
         }
@@ -57,7 +56,18 @@ const InsideCard = () => {
   return (
     <div style={{ padding: '20px' }}>
       <h1>{material.title}</h1>
-      <p><strong>Provider:</strong> {material.provider_name}</p>
+      <p>
+        <strong>Provider:</strong>{' '}
+        {material.provider_role === 'provider' && material.provider_enrolment_id ? (
+          <Link to={`/providers/${material.provider_enrolment_id}`}>
+            {material.provider_name} {material.provider_surname}
+          </Link>
+        ) : (
+          `${material.provider_name || ''} ${material.provider_surname || ''}`
+        )}
+      </p>
+
+
       <p><strong>Type:</strong> {material.type}</p>
       <p><strong>Academic Year:</strong> {material.academic_year}</p>
       <p><strong>Study Program:</strong> {material.study_program}</p>

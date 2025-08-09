@@ -17,7 +17,9 @@ export default function ProviderHome() {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        provider_name: '', // now editable
+        provider_enrolment_id: '', // added
+        provider_name: '',
+        provider_surname: '',      // added
         file: null,
         type: 'digital',
         academic_year: '',
@@ -26,13 +28,16 @@ export default function ProviderHome() {
         course: ''
     });
 
-    // Fetch provider info after component mounts (or user logs in)
     useEffect(() => {
+        const enrolmentId = localStorage.getItem('provider_enrolment_id') || '';
         const fullName = localStorage.getItem('provider_name') || '';
-        setProviderName(fullName);
+        const surname = localStorage.getItem('provider_surname') || '';
+
         setFormData(prev => ({
             ...prev,
-            provider_name: fullName,  // prefill, but editable now
+            provider_enrolment_id: enrolmentId,
+            provider_name: fullName,
+            provider_surname: surname
         }));
     }, []);
 
@@ -75,7 +80,6 @@ export default function ProviderHome() {
 
     const handleFormChange = (e) => {
         const { name, value, files } = e.target;
-
         setFormData(prev => ({
             ...prev,
             [name]: name === 'file' ? files[0] : value,
@@ -87,29 +91,30 @@ export default function ProviderHome() {
 
         const data = new FormData();
         for (const key in formData) {
-            data.append(key, formData[key]);
+            if (formData[key] !== null && formData[key] !== undefined) {
+                data.append(key, formData[key]);
+            }
         }
 
         try {
-            const response = await fetch('http://88.200.63.148:9333/api/materials/publish', {
+            const response = await fetch('http://88.200.63.148:9333/api/publish', {
                 method: 'POST',
                 body: data
             });
 
             if (!response.ok) throw new Error('Failed to publish material');
             alert('Material published successfully!');
-            setShowForm(false);
-            setFormData({
+            setFormData(prev => ({
+                ...prev,
                 title: '',
                 description: '',
-                provider_name: providerName, // keep prefilled provider name after submit
                 file: null,
                 type: 'digital',
                 academic_year: '',
                 study_program: '',
                 university: '',
                 course: ''
-            });
+            }));
         } catch (error) {
             console.error(error);
             alert('Error publishing material');
@@ -212,17 +217,15 @@ export default function ProviderHome() {
                     alignItems: 'center',
                     zIndex: 2000
                 }}>
-                    <form onSubmit={handleFormSubmit} style={{
-                        backgroundColor: 'white',
-                        padding: '30px',
-                        borderRadius: '8px',
-                        maxWidth: '600px',
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '10px'
-                    }}>
-                        <h2>Publish Material</h2>
+                    <form onSubmit={handleFormSubmit} style={{ /* your styles here */ }}>
+                        {/* Provider enrolment ID (hidden or readonly) */}
+                        <input
+                            type="text"
+                            name="provider_enrolment_id"
+                            value={formData.provider_enrolment_id}
+                            readOnly
+                            hidden
+                        />
 
                         <input
                             name="provider_name"
@@ -232,6 +235,16 @@ export default function ProviderHome() {
                             required
                         />
 
+                        <input
+                            name="provider_surname"
+                            placeholder="Provider Surname"
+                            value={formData.provider_surname}
+                            onChange={handleFormChange}
+                            required
+                        />
+
+                        {/* Other fields */}
+                        {/* title, description, academic_year, study_program, university, course */}
                         {['title', 'description', 'academic_year', 'study_program', 'university', 'course'].map(field => (
                             <input
                                 key={field}
@@ -257,10 +270,7 @@ export default function ProviderHome() {
                             required
                         />
 
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <button type="submit" style={{ padding: '10px 20px' }}>Submit</button>
-                            <button type="button" onClick={() => setShowForm(false)} style={{ padding: '10px 20px' }}>Cancel</button>
-                        </div>
+                        <button type="submit">Submit</button>
                     </form>
                 </div>
             )}

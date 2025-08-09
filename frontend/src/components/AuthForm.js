@@ -33,6 +33,10 @@ const AuthForm = () => {
 
                 if (loginResponse.user) {
                     localStorage.setItem('user', JSON.stringify(loginResponse.user));
+                    localStorage.setItem('provider_enrolment_id', loginResponse.user.enrolment_id || '');
+                    localStorage.setItem('provider_name', loginResponse.user.name || '');
+                    localStorage.setItem('provider_surname', loginResponse.user.surname || '');
+
                 }
 
                 const homepageRes = await fetch('http://88.200.63.148:9333/api/homepage', {
@@ -58,6 +62,7 @@ const AuthForm = () => {
 
                 if (loginResponse.user) {
                     localStorage.setItem('user', JSON.stringify(loginResponse.user));
+                    localStorage.setItem('provider_enrolment_id', loginResponse.user.provider_enrolment_id || '');
                 }
 
                 const homepageRes = await fetch('http://88.200.63.148:9333/api/homepage', {

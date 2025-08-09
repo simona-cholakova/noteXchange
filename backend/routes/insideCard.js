@@ -1,20 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const dataPool = require('../DB/dbConn.js');
+const dataPool = require('../DB/dbConn.js'); // your dataPool with DB functions
 
-router.get('/materials/:id', async (req, res) => {
+router.get('/material/:id', async (req, res) => {
   try {
+    // Use the dataPool function that already fetches material + provider info
     const material = await dataPool.getStudyMaterialById(req.params.id);
+
     if (!material) {
       return res.status(404).json({ message: 'Material not found' });
     }
 
-    // Send all info except raw file data
     const { file, ...rest } = material;
+
     res.json({
       ...rest,
-      hasFile: !!file, 
-      downloadUrl: `/api/materials/${material.material_id}/download`
+      hasFile: !!file,
+      downloadUrl: `/api/materials/${material.material_id}/download`,
     });
   } catch (err) {
     console.error(err);
@@ -31,7 +33,7 @@ router.get('/materials/:id/download', async (req, res) => {
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="${material.title}.pdf"`);
-    res.send(material.file); // file is already stored as BLOB in DB
+    res.send(material.file);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
@@ -39,4 +41,3 @@ router.get('/materials/:id/download', async (req, res) => {
 });
 
 module.exports = router;
-

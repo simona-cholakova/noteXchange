@@ -7,7 +7,7 @@ const upload = multer({ storage: storage });
 
 router.post('/publish', upload.single('file'), (req, res) => {
   try {
-    const { title, description, provider_name, type, academic_year, study_program, university, course } = req.body;
+    const { title, description, provider_enrolment_id, provider_name, provider_surname, type, academic_year, study_program, university, course } = req.body;
     const fileBuffer = req.file?.buffer;
 
     if (!fileBuffer) {
@@ -15,7 +15,7 @@ router.post('/publish', upload.single('file'), (req, res) => {
     }
 
     datapool.publishStudyMaterial(
-      title, description, provider_name, fileBuffer, type, academic_year, study_program, university, course
+      title, description, provider_enrolment_id, provider_name, provider_surname, fileBuffer, type, academic_year, study_program, university, course
     )
       .then(result => {
         res.status(201).json({ message: 'Material published successfully!', id: result.insertId });
