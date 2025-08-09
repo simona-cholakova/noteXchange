@@ -31,9 +31,7 @@ const AuthForm = () => {
                     password: formData.password
                 });
 
-                // Assuming loginResponse is the parsed JSON response with a `user` object:
                 if (loginResponse.user) {
-                    // Save user info (with enrolment_id etc.) to localStorage
                     localStorage.setItem('user', JSON.stringify(loginResponse.user));
                 }
 
@@ -49,13 +47,35 @@ const AuthForm = () => {
                 }
 
             } else {
+                // Register the user
                 await register(formData);
-                navigate('/login');
+
+                // After successful registration, perform login automatically
+                const loginResponse = await login({
+                    enrolment_id: formData.enrolment_id,
+                    password: formData.password
+                });
+
+                if (loginResponse.user) {
+                    localStorage.setItem('user', JSON.stringify(loginResponse.user));
+                }
+
+                const homepageRes = await fetch('http://88.200.63.148:9333/api/homepage', {
+                    credentials: 'include'
+                });
+                const homepageData = await homepageRes.json();
+
+                if (homepageData.homepage === 'provider') {
+                    navigate('/provider-home');
+                } else {
+                    navigate('/student-home');
+                }
             }
         } catch (err) {
-            setError(err.response?.data?.message || 'Something went wrong');
+            setError(err.message || 'Something went wrong');
         }
     };
+
 
 
     return (

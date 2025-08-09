@@ -1,69 +1,168 @@
+/* Wrapper centers the form and sets background */
 .auth-form-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(to right, #0f4c75, #3282b8);
+  background: linear-gradient(135deg, #0f4c75, #3282b8);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
+/* Card container for the form */
 .auth-form-card {
-  background: white;
+  background: #fff;
   padding: 2.5rem 2rem;
   border-radius: 15px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   text-align: center;
+  transition: box-shadow 0.3s ease;
 }
 
+.auth-form-card:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Form heading */
 .auth-form-card h2 {
-  margin-bottom: 1.5rem;
-  color: #000;
-  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  color: #222;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
+/* Tab buttons container */
 .tab-buttons {
   display: flex;
-  margin-bottom: 1rem;
-  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
 }
 
+/* Individual tab buttons */
 .tab-buttons button {
   flex: 1;
-  padding: 0.7rem;
+  padding: 0.75rem 1rem;
   border: none;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 1rem;
   background-color: #f0f0f0;
-  transition: 0.3s;
+  color: #444;
+  transition: background-color 0.3s, color 0.3s;
+  user-select: none;
+}
+
+.tab-buttons button:not(.active):hover {
+  background-color: #d9e6ff;
 }
 
 .tab-buttons button.active {
-  background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
+  background: linear-gradient(90deg, #0052d4, #4364f7, #6fb1fc);
   color: white;
 }
 
-.auth-form-card input {
+/* Input fields */
+.auth-form-card input[type="text"],
+.auth-form-card input[type="email"],
+.auth-form-card input[type="password"] {
   width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
+  padding: 12px 16px;
+  margin-bottom: 1.25rem;
   border-radius: 8px;
+  border: 1.5px solid #ccc;
   font-size: 1rem;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
 }
 
-.auth-form-card input:focus {
+.auth-form-card input[type="text"]:focus,
+.auth-form-card input[type="email"]:focus,
+.auth-form-card input[type="password"]:focus {
   border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
   outline: none;
 }
 
+/* Forgot password link */
+.forgot-password {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.forgot-password:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Error message styling */
+.error-msg {
+  color: #d9534f;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Submit button */
 .submit-btn {
   width: 100%;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
-  color: white;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, #0052d4, #4364f7, #6fb1fc);
   border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  user-select: none;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(90deg, #003d99, #355bbf, #599dfc);
+}
+
+/* Toggle link below the button */
+.toggle-link {
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  color: #444;
+  user-select: none;
+}
+
+.toggle-link span {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.toggle-link span:hover {
+  color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .auth-form-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .tab-buttons button {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .submit-btn {
+    font-size: 1rem;
+    padding: 10px 14px;
+  }
 }
