@@ -8,13 +8,14 @@ router.post('/login', async (req, res) => {
 
     try {
         const user = await datapool.login(enrolment_id, password);
+        req.session.userId = user.enrolment_id;
         req.session.user = {
             id: user.id,
             enrolment_id: user.enrolment_id,
             name: user.name,
             surname: user.surname,
             username: user.username,
-            role: user.role 
+            role: user.role
         };
         res.json({ message: 'Login successful', user: req.session.user });
     } catch (err) {

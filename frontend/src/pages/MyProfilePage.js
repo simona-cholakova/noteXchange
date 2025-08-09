@@ -6,6 +6,7 @@ export default function MyProfilePage() {
   const [uploadStatus, setUploadStatus] = useState('');
   const backendBaseURL = 'http://88.200.63.148:9333';
 
+  // Fetch user profile data on mount
   useEffect(() => {
     fetch(`${backendBaseURL}/api/userData`, {
       credentials: 'include',
@@ -18,6 +19,12 @@ export default function MyProfilePage() {
       .catch(err => console.error('Error fetching profile:', err));
   }, []);
 
+  // Initialize aboutMe textarea when profile loads
+  useEffect(() => {
+    if (profile) setAboutMe(profile.aboutMe || '');
+  }, [profile]);
+
+  // Handle profile picture upload
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -44,9 +51,10 @@ export default function MyProfilePage() {
 
       if (res.ok) {
         setUploadStatus('Upload successful!');
-        setProfile(prev => ({ ...prev, profile_picture: data.filename }));
+        // Update profile_picture with full URL path returned from backend
+        setProfile(prev => ({ ...prev, picture_url: data.url }));
       } else {
-        setUploadStatus('Upload failed: ' + data.error);
+        setUploadStatus('Upload failed: ' + (data.error || 'Unknown error'));
       }
     } catch (error) {
       setUploadStatus('Upload failed: ' + error.message);
@@ -79,9 +87,9 @@ export default function MyProfilePage() {
             color: '#777',
           }}
         >
-          {profile.profile_picture ? (
+          {profile.picture_url ? (
             <img
-              src={`${backendBaseURL}/uploads/${profile.profile_picture}`}
+              src={`${backendBaseURL}${profile.picture_url}`}
               alt="Profile"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
@@ -98,7 +106,7 @@ export default function MyProfilePage() {
         />
       </div>
 
-      {uploadStatus && <p style={{ textAlign: 'center', color: 'green' }}>{uploadStatus}</p>}
+      {uploadStatus && <p style={{ textAlign: 'center', color: uploadStatus.includes('failed') ? 'red' : 'green' }}>{uploadStatus}</p>}
 
       <h2 style={{ textAlign: 'center' }}>
         {profile.name} {profile.surname}

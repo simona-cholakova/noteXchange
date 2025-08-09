@@ -15,7 +15,7 @@ let dataPool = {}
 dataPool.getUserById = (enrolment_id) => {
   return new Promise((resolve, reject) => {
     conn.query(
-      `SELECT enrolment_id, name, surname, email, username, role 
+      `SELECT enrolment_id, name, surname, email, username, role, picture_url 
        FROM User 
        WHERE TRIM(enrolment_id) = ?`,
       [enrolment_id.toString()],
@@ -30,14 +30,15 @@ dataPool.getUserById = (enrolment_id) => {
   });
 };
 
-dataPool.updateUserProfilePicture = (userId, imageUrl) => {
+
+dataPool.updateUserPicture = (userId, pictureUrl) => {
   return new Promise((resolve, reject) => {
     conn.query(
-      'UPDATE User SET picture_url = ? WHERE enrolment_id = ?',
-      [imageUrl, userId],
-      (err, result) => {
+      'UPDATE User SET picture_url = ? WHERE TRIM(enrolment_id) = ?',
+      [pictureUrl, userId.toString()],
+      (err, results) => {
         if (err) return reject(err);
-        resolve(result);
+        resolve(results);
       }
     );
   });
