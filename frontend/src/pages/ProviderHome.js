@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/StudentHome.css';
+import MaterialCard from '../components/MaterialCard';
 
 export default function ProviderHome() {
     const navigate = useNavigate();
@@ -193,11 +194,11 @@ export default function ProviderHome() {
 
             <div className="search-results">
                 {results.map((item, idx) => (
-                    <div key={idx} className="material-card" onClick={() => console.log('Clicked:', item)}>
-                        <h3 className="material-title">{item.title}</h3>
-                        <p className="material-meta"><strong>Provider:</strong> {item.provider_name}</p>
-                        <p className="material-meta"><strong>Course:</strong> {item.course}</p>
-                    </div>
+                    <MaterialCard
+                        key={idx}
+                        material={item}
+                        onClick={(mat) => console.log('Clicked:', mat)}
+                    />
                 ))}
             </div>
 

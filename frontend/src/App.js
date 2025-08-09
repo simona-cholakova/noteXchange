@@ -1,9 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProviderHome from './pages/ProviderHome';
 import StudentHome from './pages/StudentHome';
 import MyProfilePage from './pages/MyProfilePage';
+import InsideCard from './pages/InsideCard';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/provider-home" element={<ProviderHome />} />
         <Route path="/student-home" element={<StudentHome />} />
         <Route path="/profile" element={<MyProfilePage />} />
+        <Route path="/material/:id" element={<InsideCard />} />
         <Route path="/" element={<h1>Welcome Home</h1>} />
       </Routes>
     </Router>

@@ -58,6 +58,33 @@ dataPool.publishStudyMaterial = (title, description, provider_name, file, type, 
   });
 };
 
+dataPool.getStudyMaterialById = (material_id) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT 
+        material_id, 
+        title, 
+        description, 
+        provider_name, 
+        file, 
+        type, 
+        academic_year, 
+        study_program, 
+        university, 
+        course, 
+        created_at
+      FROM StudyMaterial
+      WHERE material_id = ?
+    `;
+
+    conn.query(query, [material_id], (err, results) => {
+      if (err) return reject(err);
+      if (results.length === 0) return resolve(null);
+      resolve(results[0]);
+    });
+  });
+};
+
 dataPool.register = (enrolment_id, name, surname, email, username, password) => {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {

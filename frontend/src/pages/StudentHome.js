@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';  // import navigate
 import '../styles/StudentHome.css';
 import { Link } from 'react-router-dom';
-
+import MaterialCard from '../components/MaterialCard';
 
 export default function StudentHome() {
   const navigate = useNavigate();  // init navigate
@@ -64,9 +64,9 @@ export default function StudentHome() {
   return (
     <div style={{ padding: '20px', position: 'relative' }}>
       {/* My Profile button top right */}
-      <Link to="/profile" style={{position: 'absolute', top: 20, right: 20, padding: '8px 16px', fontSize: '14px', cursor: 'pointer', borderRadius: '4px', border: '1px solid #007bff', backgroundColor: 'white', color: '#007bff', fontWeight: 'bold', textDecoration: 'none'}}>
-  My Profile
-</Link>
+      <Link to="/profile" style={{ position: 'absolute', top: 20, right: 20, padding: '8px 16px', fontSize: '14px', cursor: 'pointer', borderRadius: '4px', border: '1px solid #007bff', backgroundColor: 'white', color: '#007bff', fontWeight: 'bold', textDecoration: 'none' }}>
+        My Profile
+      </Link>
 
 
       <h1>Student Home Page</h1>
@@ -133,17 +133,14 @@ export default function StudentHome() {
 
       <div className="search-results">
         {results.map((item, idx) => (
-          <div
+          <MaterialCard
             key={idx}
-            className="material-card"
-            onClick={() => console.log('Clicked:', item)} // Navigation later
-          >
-            <h3 className="material-title">{item.title}</h3>
-            <p className="material-meta"><strong>Provider:</strong> {item.provider_name}</p>
-            <p className="material-meta"><strong>Course:</strong> {item.course}</p>
-          </div>
+            material={item}
+            onClick={(mat) => console.log('Clicked:', mat)}
+          />
         ))}
       </div>
+
     </div>
   );
 }

@@ -10,6 +10,7 @@ const materialsStudentRoutes = require('./routes/materialsStudent');
 const filtersRoutes = require('./routes/filters');
 const userRoutes = require('./routes/user');
 const multerRoutes = require('./routes/multer');
+const insideCardRoutes = require('./routes/insideCard');
 
 const port = 9333;
 
@@ -51,10 +52,11 @@ app.use(session({
 
 // Routes
 app.use('/api', loginRoutes);
-app.use('/api/materials', materialsProviderRoutes);
+app.use('/api', materialsProviderRoutes);
 app.use('/api/filters', filtersRoutes);
 app.use('/api', userRoutes);
 app.use('/api', multerRoutes);
+app.use('/api', insideCardRoutes);
 
 app.get('/', (req, res) => {
   res.send('hola');
