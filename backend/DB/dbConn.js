@@ -44,6 +44,20 @@ dataPool.updateUserPicture = (userId, pictureUrl) => {
   });
 };
 
+dataPool.updateAboutMe = (userId, about_me) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      'UPDATE User SET about_me = ? WHERE TRIM(enrolment_id) = ?',
+      [about_me, userId.toString()],
+      (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+      }
+    );
+  });
+};
+
+
 dataPool.publishStudyMaterial = (title, description, provider_enrolment_id, provider_name, provider_surname, file, type, academic_year, study_program, university, course) => {
   return new Promise((resolve, reject) => {
     conn.query(
@@ -68,7 +82,8 @@ dataPool.getProviderByEnrolmentId = (provider_enrolment_id) => {
         surname AS provider_surname,
         role AS provider_role,
         picture_url,
-        email AS provider_email
+        email AS provider_email,
+        about_me AS provider_about_me
       FROM User
       WHERE TRIM(enrolment_id) = ?
     `;
@@ -159,7 +174,7 @@ dataPool.login = (enrolment_id, password) => {
 dataPool.getAllProviders = () => {
   return new Promise((resolve, reject) => {
     const query = `
-      SELECT * 
+      SELECT enrolment_id, name, surname, email, username, about_me, picture_url
       FROM User
       WHERE TRIM(role) = 'provider'
     `;

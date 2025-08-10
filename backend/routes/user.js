@@ -13,7 +13,6 @@ router.get('/userData', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Ensure picture_url includes /uploads prefix if needed
     if (user.picture_url && !user.picture_url.startsWith('/uploads')) {
       user.picture_url = '/uploads/' + user.picture_url;
     }
@@ -41,6 +40,27 @@ router.post('/user/updatePicture', async (req, res) => {
   } catch (err) {
     console.error('Error updating picture URL:', err);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.post('/updateAboutMe', async (req, res) => {
+  const { about_me } = req.body;
+  const userId = req.session.userId;
+
+  if (!userId) {
+    return res.status(401).json({ error: 'Not logged in' });
+  }
+
+  if (typeof about_me !== 'string') {
+    return res.status(400).json({ error: 'Invalid about_me value' });
+  }
+
+  try {
+    await dataPool.updateAboutMe(userId, about_me);
+    res.json({ success: true, about_me });
+  } catch (err) {
+    console.error('Error updating about_me:', err);
+    res.status(500).json({ error: 'Database error' });
   }
 });
 

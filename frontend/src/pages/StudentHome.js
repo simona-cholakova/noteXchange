@@ -9,8 +9,12 @@ export default function StudentHome() {
   const [allMaterials, setAllMaterials] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('Course');
+  const [showProvidersModal, setShowProvidersModal] = useState(false);
+  const [providers, setProviders] = useState([]);
+  const [loadingProviders, setLoadingProviders] = useState(false);
+  const [providersError, setProvidersError] = useState(null);
 
-  // New states for apply form
+  //states for apply form
   const [showApplyForm, setShowApplyForm] = useState(false);
   const [file, setFile] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -56,6 +60,37 @@ export default function StudentHome() {
 
   const handleSearch = (e) => setSearchTerm(e.target.value);
 
+  const fetchProviders = () => {
+    setLoadingProviders(true);
+    setProvidersError(null);
+    fetch('http://88.200.63.148:9333/api/allProviders')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch providers');
+        return res.json();
+      })
+      .then(data => {
+        setProviders(data);
+        setLoadingProviders(false);
+      })
+      .catch(err => {
+        setProvidersError(err.message);
+        setLoadingProviders(false);
+      });
+  };
+
+  // Handle open modal: fetch providers then show modal
+  const handleOpenProvidersModal = () => {
+    fetchProviders();
+    setShowProvidersModal(true);
+  };
+
+  // Handle close modal
+  const handleCloseProvidersModal = () => {
+    setShowProvidersModal(false);
+    setProviders([]);
+    setProvidersError(null);
+  };
+
   const toggleDropdown = () => setShowDropdown(prev => !prev);
 
   const handleFilterSelect = (filter) => {
@@ -88,6 +123,7 @@ export default function StudentHome() {
   return (
     <div className="student-home">
       <div className="button-group">
+        {/* Existing buttons */}
         <button
           onClick={() => {
             setShowApplyForm(true);
@@ -103,6 +139,11 @@ export default function StudentHome() {
         <Link to="/profile" className="my-profile-btn">
           My Profile
         </Link>
+
+        {/* New button to open providers modal */}
+        <button onClick={handleOpenProvidersModal} className="my-profile-btn">
+          Show All Providers
+        </button>
       </div>
 
       {showApplyForm ? (
@@ -174,6 +215,41 @@ export default function StudentHome() {
               )}
             </div>
           </div>
+
+          {/* Providers Modal */}
+      {showProvidersModal && (
+        <div className="modal-overlay" onClick={handleCloseProvidersModal}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={handleCloseProvidersModal} aria-label="Close providers list">&times;</button>
+            <h2>All Providers</h2>
+
+            {loadingProviders && <p>Loading providers...</p>}
+            {providersError && <p className="error-text">{providersError}</p>}
+
+            {!loadingProviders && !providersError && providers.length === 0 && (
+              <p>No providers found.</p>
+            )}
+
+            <div className="providers-list">
+              {providers.map((provider) => (
+                <div key={provider.enrolment_id} className="provider-card">
+                  <img
+                    src={`http://88.200.63.148:9333${provider.picture_url}`}
+                    alt={`${provider.name} ${provider.surname}`}
+                    className="provider-picture"
+                  />
+                  <div className="provider-info">
+                    <p className="provider-name">{provider.name} {provider.surname}</p>
+                    <a href={`mailto:${provider.email}`} className="provider-email">
+                      {provider.email}
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
           <div className="search-results">
             {results.map((item, idx) => (

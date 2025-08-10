@@ -48,6 +48,7 @@ export default function ProviderProfile() {
 
             <h1>{provider.provider_name} {provider.provider_surname}</h1>
             <p><strong>Enrolment ID:</strong> {provider.provider_enrolment_id}</p>
+            <p><strong>About me:</strong>{provider.provider_about_me}</p>
             <p><strong>Email:</strong> {provider.provider_email}</p>
             <p><strong>Role:</strong> {provider.provider_role}</p>
         </div>
