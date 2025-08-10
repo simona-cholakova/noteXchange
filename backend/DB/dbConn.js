@@ -59,6 +59,30 @@ dataPool.publishStudyMaterial = (title, description, provider_enrolment_id, prov
   });
 };
 
+dataPool.getProviderByEnrolmentId = (provider_enrolment_id) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT 
+        enrolment_id AS provider_enrolment_id,
+        name AS provider_name,
+        surname AS provider_surname,
+        role AS provider_role,
+        picture_url,
+        email AS provider_email
+      FROM User
+      WHERE TRIM(enrolment_id) = ?
+    `;
+    conn.query(query, [provider_enrolment_id.toString()], (err, results) => {
+      if (err) {
+        console.error('MySQL error in getProviderByEnrolmentId:', err);
+        return reject(err);
+      }
+      if (results.length === 0) return resolve(null);
+      resolve(results[0]);
+    });
+  });
+};
+
 
 // dataPool.getStudyMaterialById = (material_id) => {
 //   return new Promise((resolve, reject) => {

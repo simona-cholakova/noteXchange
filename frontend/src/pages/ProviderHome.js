@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/StudentHome.css';
+import '../styles/ProviderHome.css';
 import MaterialCard from '../components/MaterialCard';
 
 export default function ProviderHome() {
@@ -12,14 +12,13 @@ export default function ProviderHome() {
     const [selectedFilter, setSelectedFilter] = useState('Course');
 
     const [showForm, setShowForm] = useState(false);
-    const [providerName, setProviderName] = useState('');  // store fetched provider name
 
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        provider_enrolment_id: '', // added
+        provider_enrolment_id: '',
         provider_name: '',
-        provider_surname: '',      // added
+        provider_surname: '',
         file: null,
         type: 'digital',
         academic_year: '',
@@ -41,7 +40,6 @@ export default function ProviderHome() {
         }));
     }, []);
 
-    // Search effect
     useEffect(() => {
         if (!searchTerm) {
             setResults([]);
@@ -115,6 +113,7 @@ export default function ProviderHome() {
                 university: '',
                 course: ''
             }));
+            setShowForm(false);
         } catch (error) {
             console.error(error);
             alert('Error publishing material');
@@ -122,72 +121,35 @@ export default function ProviderHome() {
     };
 
     return (
-        <div style={{ padding: '20px', position: 'relative' }}>
-            <Link to="/profile" style={{
-                position: 'absolute',
-                top: 20,
-                right: 20,
-                padding: '8px 16px',
-                fontSize: '14px',
-                cursor: 'pointer',
-                borderRadius: '4px',
-                border: '1px solid #007bff',
-                backgroundColor: 'white',
-                color: '#007bff',
-                fontWeight: 'bold',
-                textDecoration: 'none'
-            }}>
+        <div className="container">
+            <Link to="/profile" className="profile-link">
                 My Profile
             </Link>
 
             <h1>Provider Home Page</h1>
 
-            <button onClick={() => setShowForm(true)} style={{
-                marginTop: '20px',
-                padding: '10px 20px',
-                fontSize: '16px',
-                backgroundColor: '#28a745',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-            }}>
+            <button onClick={() => setShowForm(true)} className="publish-button">
                 Publish New Material
             </button>
 
-            <div style={{ display: 'flex', gap: '10px', marginTop: '40px', position: 'relative' }}>
+            <div className="search-bar-container">
                 <input
                     type="text"
                     placeholder={`Search materials by ${selectedFilter.toLowerCase()}...`}
                     value={searchTerm}
                     onChange={handleSearch}
-                    style={{ padding: '8px', fontSize: '16px', flex: '1' }}
+                    className="search-input"
                 />
-                <div style={{ position: 'relative' }}>
-                    <button onClick={toggleDropdown} style={{ padding: '8px 16px', fontSize: '16px', cursor: 'pointer' }}>
+                <div className="dropdown-container">
+                    <button onClick={toggleDropdown} className="dropdown-button">
                         Search By ...
                     </button>
                     {showDropdown && (
-                        <ul style={{
-                            position: 'absolute',
-                            top: '100%',
-                            left: 0,
-                            backgroundColor: 'white',
-                            border: '1px solid #ccc',
-                            padding: 0,
-                            margin: '4px 0 0 0',
-                            listStyle: 'none',
-                            width: '150px',
-                            boxShadow: '0 2px 5px rgba(0,0,0,0.15)',
-                            zIndex: 1000,
-                        }}>
+                        <ul className="dropdown-menu">
                             {['University', 'Provider', 'Academic Year', 'Study Program', 'Course'].map(option => (
                                 <li
                                     key={option}
                                     onClick={() => handleFilterSelect(option)}
-                                    style={{ padding: '8px 12px', cursor: 'pointer', borderBottom: '1px solid #eee' }}
-                                    onMouseEnter={e => e.target.style.backgroundColor = '#f0f0f0'}
-                                    onMouseLeave={e => e.target.style.backgroundColor = 'white'}
                                 >
                                     {option}
                                 </li>
@@ -208,17 +170,27 @@ export default function ProviderHome() {
             </div>
 
             {showForm && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    backgroundColor: 'rgba(0,0,0,0.5)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 2000
-                }}>
-                    <form onSubmit={handleFormSubmit} style={{ /* your styles here */ }}>
-                        {/* Provider enrolment ID (hidden or readonly) */}
+                <div
+                    className="modal-overlay"
+                    onClick={() => setShowForm(false)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Escape') setShowForm(false) }}
+                >
+                    <form
+                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside form
+                        onSubmit={handleFormSubmit}
+                        className="publish-form"
+                    >
+                        <button
+                            type="button"
+                            className="close-button"
+                            onClick={() => setShowForm(false)}
+                            aria-label="Close form"
+                        >
+                            &times;
+                        </button>
+
                         <input
                             type="text"
                             name="provider_enrolment_id"
@@ -243,9 +215,7 @@ export default function ProviderHome() {
                             required
                         />
 
-                        {/* Other fields */}
-                        {/* title, description, academic_year, study_program, university, course */}
-                        {['title', 'description', 'academic_year', 'study_program', 'university', 'course'].map(field => (
+                        {['Title', 'Description', 'Academic_year', 'Study_program', 'University', 'Course'].map(field => (
                             <input
                                 key={field}
                                 name={field}

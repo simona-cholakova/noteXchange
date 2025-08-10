@@ -11,9 +11,13 @@ const filtersRoutes = require('./routes/filters');
 const userRoutes = require('./routes/user');
 const multerRoutes = require('./routes/multer');
 const insideCardRoutes = require('./routes/insideCard');
+const providerProfileRoutes = require('./routes/providerProfile');
 const path = require('path');  
+const multer = require('multer');
 
 const port = 9333;
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Middleware
 app.use(express.json());
@@ -59,6 +63,8 @@ app.use('/api', userRoutes);
 app.use('/api', multerRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', insideCardRoutes);
+app.use('/api', providerProfileRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('hola');

@@ -16,7 +16,7 @@ router.get('/material/:id', async (req, res) => {
     res.json({
       ...rest,
       hasFile: !!file,
-      downloadUrl: `/api/materials/${material.material_id}/download`,
+      downloadUrl: `/api/material/${material.material_id}/download`,
     });
   } catch (err) {
     console.error(err);
@@ -24,7 +24,7 @@ router.get('/material/:id', async (req, res) => {
   }
 });
 
-router.get('/materials/:id/download', async (req, res) => {
+router.get('/material/:id/download', async (req, res) => {
   try {
     const material = await dataPool.getStudyMaterialById(req.params.id);
     if (!material || !material.file) {
