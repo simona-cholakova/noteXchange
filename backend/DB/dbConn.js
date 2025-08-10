@@ -84,33 +84,6 @@ dataPool.getProviderByEnrolmentId = (provider_enrolment_id) => {
 };
 
 
-// dataPool.getStudyMaterialById = (material_id) => {
-//   return new Promise((resolve, reject) => {
-//     const query = `
-//       SELECT 
-//         material_id, 
-//         title, 
-//         description, 
-//         provider_name, 
-//         file, 
-//         type, 
-//         academic_year, 
-//         study_program, 
-//         university, 
-//         course, 
-//         created_at
-//       FROM StudyMaterial
-//       WHERE material_id = ?
-//     `;
-
-//     conn.query(query, [material_id], (err, results) => {
-//       if (err) return reject(err);
-//       if (results.length === 0) return resolve(null);
-//       resolve(results[0]);
-//     });
-//   });
-// };
-
 dataPool.getStudyMaterialById = (material_id) => {
   return new Promise((resolve, reject) => {
     const query = `
@@ -183,14 +156,20 @@ dataPool.login = (enrolment_id, password) => {
   });
 };
 
-dataPool.getAllUsers = () => {
+dataPool.getAllProviders = () => {
   return new Promise((resolve, reject) => {
-    conn.query(`SELECT * FROM User`, (err, results) => {
+    const query = `
+      SELECT * 
+      FROM User
+      WHERE TRIM(role) = 'provider'
+    `;
+    conn.query(query, (err, results) => {
       if (err) return reject(err);
       resolve(results);
     });
   });
 };
+
 
 dataPool.logout = () => {
   return new Promise((resolve, reject) => {
@@ -200,13 +179,14 @@ dataPool.logout = () => {
 
 dataPool.getAllStudyMaterials = () => {
   return new Promise((resolve, reject) => {
-    conn.query('SELECT material_id, title, description, provider_name, type, academic_year, study_program, university, course FROM StudyMaterial',
-      (err, results) => {
-        if (err) return reject(err);
-        resolve(results);
-      });
+    const query = `SELECT material_id, title, description, provider_name, type, academic_year, study_program, university, created_at, course, provider_surname, provider_enrolment_id FROM StudyMaterial`;
+    conn.query(query, (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
   });
 };
+
 
 dataPool.getUserData = async function (enrolmentNumber) {
   try {

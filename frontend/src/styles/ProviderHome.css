@@ -91,39 +91,80 @@
     z-index: 2000;
 }
 
-/* Form container */
+/* Form container styling */
 .publish-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 400px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  background: linear-gradient(135deg, #f9fafb, #e3f2fd);
+  padding: 36px 48px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 123, 255, 0.15);
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Inputs and select */
 .publish-form input[type="text"],
 .publish-form input[type="file"],
 .publish-form select {
-    padding: 8px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+  padding: 14px 18px;
+  border: 2px solid #90caf9;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #333;
+  background-color: #fff;
+  outline-offset: 2px;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.06);
 }
 
+.publish-form input[type="text"]:focus,
+.publish-form select:focus,
+.publish-form input[type="file"]:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 8px rgba(25, 118, 210, 0.5);
+  background-color: #fafafa;
+}
+
+/* Submit button styling */
 .publish-form button[type="submit"] {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
+  padding: 16px 0;
+  background: linear-gradient(90deg, #1565c0, #42a5f5);
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  font-size: 19px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(21, 101, 192, 0.6);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
 }
 
 .publish-form button[type="submit"]:hover {
-    background-color: #0056b3;
+  background: linear-gradient(90deg, #0d47a1, #64b5f6);
+  box-shadow: 0 8px 20px rgba(13, 71, 161, 0.8);
+}
+
+/* Close button */
+.close-button {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  color: #444;
+  cursor: pointer;
+  transition: color 0.25s ease;
+  line-height: 1;
+}
+
+.close-button:hover {
+  color: #0d47a1;
 }
 
 /* Modal overlay background */

@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const session = require('express-session');
-const datapool = require('./DB/dbConn.js');
+const dataPool = require('./DB/dbConn.js');
 const loginRoutes = require('./routes/login');
 const cors = require('cors');
 const materialsProviderRoutes = require('./routes/materialsProvider');
@@ -58,6 +58,7 @@ app.use(session({
 // Routes
 app.use('/api', loginRoutes);
 app.use('/api', materialsProviderRoutes);
+app.use('/api', materialsStudentRoutes);
 app.use('/api/filters', filtersRoutes);
 app.use('/api', userRoutes);
 app.use('/api', multerRoutes);

@@ -1,6 +1,7 @@
 .search-results {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* exactly 3 equal columns */
+  grid-template-columns: repeat(3, 1fr);
+  /* exactly 3 equal columns */
   gap: 16px;
 }
 
@@ -8,11 +9,12 @@
   padding: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   background-color: #f9f9f9;
   transition: background-color 0.2s;
-  height: 150px; /* or what you prefer */
+  height: 150px;
+  /* or what you prefer */
   box-sizing: border-box;
 }
 
@@ -26,4 +28,193 @@
 
 .material-meta {
   margin: 4px 0;
+}
+
+.student-home {
+  padding: 20px;
+  position: relative;
+}
+
+.student-home h1 {
+  margin-top: 0;
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 60px;
+  position: relative;
+}
+
+.search-input {
+  padding: 8px;
+  font-size: 16px;
+  flex: 1;
+}
+
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-btn {
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 0;
+  margin: 4px 0 0 0;
+  list-style: none;
+  width: 150px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.search-results {
+  margin-top: 20px;
+}
+
+/* Container for the apply form */
+.apply-form-container {
+  position: relative; /* key to keep close-btn inside this container */
+  max-width: 480px;
+  margin: 30px auto 50px;
+  padding: 24px 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  text-align: center;
+}
+
+/* Paragraph text inside the form */
+.apply-form-container p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* Style the file input nicely */
+.apply-form-container input[type="file"] {
+  display: inline-block;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.apply-form-container input[type="file"]:hover {
+  border-color: #007bff;
+}
+
+/* Submit button */
+.submit-btn {
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(90deg, #0056b3 0%, #003d7a 100%);
+}
+
+.button-group {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.close-btn {
+  position: absolute; /* add this */
+  top: 10px;          /* space from top */
+  right: 10px;        /* space from right */
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #007bff;
+}
+
+.button-group a,
+.button-group button {
+  min-width: 120px;
+  max-width: 180px;
+  flex-shrink: 0;
+  margin: 0; /* Remove bottom margins if any */
+}
+
+.my-profile-btn {
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 2px solid #007bff;
+  background-color: #fff;
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 123, 255, 0.3);
+}
+
+.my-profile-btn:hover {
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.6);
+}
+
+/* Adjust search-container margin so it doesn't clash with buttons */
+.search-container {
+  margin-top: 0;
+  /* override your 60px */
+}
+
+/* Responsive tweaks */
+/* On mobile */
+@media (max-width: 600px) {
+  .button-group {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .button-group a,
+  .button-group button {
+    width: 48%;   /* two side-by-side on small screen */
+    margin-bottom: 10px;
+  }
 }

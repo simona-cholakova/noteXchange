@@ -8,6 +8,7 @@ export default function ProviderHome() {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
+    const [allMaterials, setAllMaterials] = useState([]); // <-- added
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedFilter, setSelectedFilter] = useState('Course');
 
@@ -27,6 +28,7 @@ export default function ProviderHome() {
         course: ''
     });
 
+    // Load provider info once on mount
     useEffect(() => {
         const enrolmentId = localStorage.getItem('provider_enrolment_id') || '';
         const fullName = localStorage.getItem('provider_name') || '';
@@ -40,9 +42,21 @@ export default function ProviderHome() {
         }));
     }, []);
 
+    // Fetch all materials on first load
+    useEffect(() => {
+        fetch('http://88.200.63.148:9333/api/studymaterials')
+            .then(res => res.json())
+            .then(data => {
+                setAllMaterials(data);
+                setResults(data); // initially show all materials
+            })
+            .catch(err => console.error('Error fetching all materials:', err));
+    }, []);
+
+    // Fetch filtered results when searchTerm or selectedFilter changes
     useEffect(() => {
         if (!searchTerm) {
-            setResults([]);
+            setResults(allMaterials); // show all if search is empty
             return;
         }
 
@@ -65,16 +79,18 @@ export default function ProviderHome() {
         }, 500);
 
         return () => clearTimeout(delayDebounceFn);
-    }, [searchTerm, selectedFilter]);
+    }, [searchTerm, selectedFilter, allMaterials]);
 
     const handleSearch = (e) => setSearchTerm(e.target.value);
     const toggleDropdown = () => setShowDropdown(prev => !prev);
     const handleFilterSelect = (filter) => {
         setSelectedFilter(filter);
         setSearchTerm('');
-        setResults([]);
+        setResults(allMaterials); // reset to all materials on filter change
         setShowDropdown(false);
     };
+
+    // rest of your code unchanged...
 
     const handleFormChange = (e) => {
         const { name, value, files } = e.target;
@@ -215,7 +231,7 @@ export default function ProviderHome() {
                             required
                         />
 
-                        {['Title', 'Description', 'Academic_year', 'Study_program', 'University', 'Course'].map(field => (
+                        {['title', 'description', 'academic_year', 'study_program', 'university', 'course'].map(field => (
                             <input
                                 key={field}
                                 name={field}

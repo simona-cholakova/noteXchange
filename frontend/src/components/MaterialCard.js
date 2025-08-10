@@ -6,7 +6,7 @@ export default function MaterialCard({ material }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/material/${material.material_id}`);  //matches your React Router route
+        navigate(`/material/${material.material_id}`); 
     };
 
 

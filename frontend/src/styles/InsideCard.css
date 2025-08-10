@@ -1,0 +1,65 @@
+.inside-card-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.inside-card-container h1 {
+  font-size: 2.4rem;
+  margin-bottom: 15px;
+  color: #222;
+  font-weight: 700;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 8px;
+}
+
+.inside-card-container p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+.inside-card-container p strong {
+  color: #555;
+}
+
+.inside-card-container a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.inside-card-container a:hover {
+  text-decoration: underline;
+}
+
+.download-btn {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+.download-btn:hover {
+  background-color: #0056b3;
+}
+
+.download-btn:active {
+  background-color: #004494;
+  box-shadow: none;
+}

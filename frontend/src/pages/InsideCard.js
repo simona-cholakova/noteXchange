@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';  // <-- import Link here
+import { useParams, Link } from 'react-router-dom';  
+import '../styles/InsideCard.css';
 
 const InsideCard = () => {
   const { id } = useParams(); // material_id from URL
@@ -53,8 +54,8 @@ const InsideCard = () => {
   if (loading) return <p>Loading...</p>;
   if (!material) return <p>Material not found.</p>;
 
-  return (
-    <div style={{ padding: '20px' }}>
+  return(
+    <div className="inside-card-container">
       <h1>{material.title}</h1>
       <p>
         <strong>Provider:</strong>{' '}
@@ -67,7 +68,6 @@ const InsideCard = () => {
         )}
       </p>
 
-
       <p><strong>Type:</strong> {material.type}</p>
       <p><strong>Academic Year:</strong> {material.academic_year}</p>
       <p><strong>Study Program:</strong> {material.study_program}</p>
@@ -77,18 +77,7 @@ const InsideCard = () => {
       <p><strong>Description:</strong> {material.description}</p>
 
       {material.hasFile && (
-        <button
-          onClick={downloadPdf}
-          style={{
-            marginTop: '10px',
-            padding: '10px 15px',
-            backgroundColor: '#007bff',
-            color: '#fff',
-            borderRadius: '5px',
-            border: 'none',
-            cursor: 'pointer'
-          }}
-        >
+        <button className="download-btn" onClick={downloadPdf}>
           📄 Download PDF
         </button>
       )}
