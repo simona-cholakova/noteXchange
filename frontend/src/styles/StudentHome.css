@@ -92,14 +92,15 @@
 
 /* Container for the apply form */
 .apply-form-container {
-  position: relative; /* key to keep close-btn inside this container */
+  
+  position: relative;
   max-width: 480px;
   margin: 30px auto 50px;
-  padding: 24px 30px;
+  padding: 30px 40px;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 12px;
   background-color: #fff;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   text-align: center;
@@ -108,19 +109,13 @@
 /* Paragraph text inside the form */
 .apply-form-container p {
   font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 20px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: #444;
 }
-
 /* Style the file input nicely */
 .apply-form-container input[type="file"] {
-  display: inline-block;
-  margin-bottom: 20px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: border-color 0.2s ease-in-out;
+  display: none;
 }
 
 .apply-form-container input[type="file"]:hover {
@@ -129,20 +124,41 @@
 
 /* Submit button */
 .submit-btn {
-  padding: 10px 25px;
-  font-size: 16px;
-  font-weight: 600;
+  margin-top: 20px;
+  padding: 12px 30px;
+  font-size: 18px;
+  font-weight: 700;
   color: white;
-  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+  background: linear-gradient(90deg, #0066ff 0%, #004bb5 100%);
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+  box-shadow: 0 5px 15px rgba(0, 102, 255, 0.6);
   transition: background 0.3s ease;
 }
 
 .submit-btn:hover {
-  background: linear-gradient(90deg, #0056b3 0%, #003d7a 100%);
+  background: linear-gradient(90deg, #004bb5 0%, #003380 100%);
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 12px 25px;
+  cursor: pointer;
+  border: 2px solid #007bff;
+  background-color: #e7f0ff;
+  color: #007bff;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  min-width: 220px;
+  user-select: none;
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
+}
+.custom-file-upload:hover {
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.6);
 }
 
 .button-group {

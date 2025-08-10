@@ -2,6 +2,18 @@
   text-align: center;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center; /* centers horizontally */
+  align-items: center;     /* centers vertically */
+  background-color: #f5f7fa; /* optional, light background */
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

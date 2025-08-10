@@ -6,6 +6,7 @@ const InsideCard = () => {
   const { id } = useParams(); // material_id from URL
   const [material, setMaterial] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [rating, setRating] = useState(null); // New state for rating
 
   useEffect(() => {
     const fetchMaterial = async () => {
@@ -51,6 +52,13 @@ const InsideCard = () => {
     }
   };
 
+  // Handle rating button click
+  const handleRatingClick = (value) => {
+    setRating(value);
+    // Here you could send the rating to your server if needed
+    console.log(`User rated: ${value}`);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (!material) return <p>Material not found.</p>;
 
@@ -81,6 +89,25 @@ const InsideCard = () => {
           📄 Download PDF
         </button>
       )}
+
+      <div className="rating-container">
+        <strong>Rate this material:</strong>
+        <div className="rating-buttons">
+          {[...Array(10)].map((_, i) => {
+            const val = i + 1;
+            return (
+              <button
+                key={val}
+                onClick={() => handleRatingClick(val)}
+                className={rating === val ? 'rating-btn selected' : 'rating-btn'}
+              >
+                {val}
+              </button>
+            );
+          })}
+        </div>
+        {rating && <p>You rated: {rating} / 10</p>}
+      </div>
     </div>
   );
 };

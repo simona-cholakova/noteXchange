@@ -76,8 +76,10 @@
     background-color: #f0f0f0;
 }
 
-.search-results {
-    margin-top: 20px;
+.material-container {
+  background-color: #f5f0e6; /* soft beige */
+  padding: 20px;
+  border-radius: 8px;
 }
 
 /* Modal form overlay */

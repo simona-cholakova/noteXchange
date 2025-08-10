@@ -162,17 +162,23 @@ export default function StudentHome() {
                 our system, we would kindly ask you to upload your current academic records.
               </p>
               <form onSubmit={handleSubmit}>
+                <label htmlFor="file-upload" className="custom-file-upload">
+                  {file ? file.name : "Choose file"}
+                </label>
                 <input
+                  id="file-upload"
                   type="file"
                   accept=".pdf,.doc,.docx,.jpg,.png"
                   onChange={handleFileChange}
                   required
+                  style={{ display: 'none' }} // hide the default input
                 />
                 <br />
                 <button type="submit" className="submit-btn">
                   Submit
                 </button>
               </form>
+
             </>
           ) : (
             <p>
@@ -217,39 +223,39 @@ export default function StudentHome() {
           </div>
 
           {/* Providers Modal */}
-      {showProvidersModal && (
-        <div className="modal-overlay" onClick={handleCloseProvidersModal}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <button className="modal-close-btn" onClick={handleCloseProvidersModal} aria-label="Close providers list">&times;</button>
-            <h2>All Providers</h2>
+          {showProvidersModal && (
+            <div className="modal-overlay" onClick={handleCloseProvidersModal}>
+              <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <button className="modal-close-btn" onClick={handleCloseProvidersModal} aria-label="Close providers list">&times;</button>
+                <h2>All Providers</h2>
 
-            {loadingProviders && <p>Loading providers...</p>}
-            {providersError && <p className="error-text">{providersError}</p>}
+                {loadingProviders && <p>Loading providers...</p>}
+                {providersError && <p className="error-text">{providersError}</p>}
 
-            {!loadingProviders && !providersError && providers.length === 0 && (
-              <p>No providers found.</p>
-            )}
+                {!loadingProviders && !providersError && providers.length === 0 && (
+                  <p>No providers found.</p>
+                )}
 
-            <div className="providers-list">
-              {providers.map((provider) => (
-                <div key={provider.enrolment_id} className="provider-card">
-                  <img
-                    src={`http://88.200.63.148:9333${provider.picture_url}`}
-                    alt={`${provider.name} ${provider.surname}`}
-                    className="provider-picture"
-                  />
-                  <div className="provider-info">
-                    <p className="provider-name">{provider.name} {provider.surname}</p>
-                    <a href={`mailto:${provider.email}`} className="provider-email">
-                      {provider.email}
-                    </a>
-                  </div>
+                <div className="providers-list">
+                  {providers.map((provider) => (
+                    <div key={provider.enrolment_id} className="provider-card">
+                      <img
+                        src={`http://88.200.63.148:9333${provider.picture_url}`}
+                        alt={`${provider.name} ${provider.surname}`}
+                        className="provider-picture"
+                      />
+                      <div className="provider-info">
+                        <p className="provider-name">{provider.name} {provider.surname}</p>
+                        <a href={`mailto:${provider.email}`} className="provider-email">
+                          {provider.email}
+                        </a>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          )}
 
           <div className="search-results">
             {results.map((item, idx) => (

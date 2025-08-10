@@ -1,0 +1,79 @@
+/* ProviderProfile.css */
+
+.provider-profile {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    text-align: center;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Profile Picture */
+.provider-profile img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 4px solid #f0f0f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.provider-profile img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+.provider-profile h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+/* Text Styling */
+.provider-profile p {
+    margin: 10px 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.provider-profile strong {
+    color: #555;
+}
+
+/* Email Link */
+.provider-email {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.provider-email:hover {
+    text-decoration: underline;
+}
+
+/* Loading & Not Found Messages */
+.provider-profile p.loading,
+.provider-profile p.not-found {
+    font-size: 1.1rem;
+    color: #888;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
