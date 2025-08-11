@@ -154,7 +154,6 @@ const AuthForm = () => {
                     required
                 />
 
-                {isLogin && <a className="forgot-password" href="#">Forgot password?</a>}
                 {error && <p className="error-msg">{error}</p>}
 
                 <button className="submit-btn" type="submit">

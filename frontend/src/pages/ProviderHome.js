@@ -149,7 +149,7 @@ export default function ProviderHome() {
     // New function to fetch my materials by user input enrolment id
     const fetchMyMaterials = async () => {
         if (!inputEnrolmentId) {
-            alert('Please enter your provider enrolment ID');
+            alert('Enter your enrolment ID');
             return;
         }
         try {
@@ -209,7 +209,7 @@ export default function ProviderHome() {
             <div className="enrolment-input-container">
                 <input
                     type="text"
-                    placeholder="Enter your provider enrolment ID"
+                    placeholder="Enter your enrolment ID"
                     value={inputEnrolmentId}
                     onChange={e => setInputEnrolmentId(e.target.value)}
                 />
@@ -264,11 +264,12 @@ export default function ProviderHome() {
                     <MaterialCard
                         key={idx}
                         material={item}
-                        onClick={(mat) => console.log('Clicked:', mat)}
-                        onDelete={handleDelete}
+                        onDelete={handleDelete}   // must provide onDelete function here!
+                        showDelete={true}
                     />
                 ))}
             </div>
+
 
 
             {showForm && (

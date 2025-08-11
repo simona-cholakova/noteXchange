@@ -120,7 +120,7 @@ export default function StudentHome() {
     setFile(null);
   };
 
-  
+
   return (
     <div className="student-home">
       <div className="button-group">
@@ -146,7 +146,7 @@ export default function StudentHome() {
         {/* New Logout button */}
         <button
           onClick={() => {
-                window.location.href = 'http://88.200.63.148:3976/login';
+            window.location.href = 'http://88.200.63.148:3990/login';
 
           }}
           className="my-profile-btn logout-btn"
@@ -271,10 +271,12 @@ export default function StudentHome() {
               <MaterialCard
                 key={idx}
                 material={item}
-                onClick={(mat) => console.log('Clicked:', mat)}
+                onClick={(mat) => console.log('Clicked:', mat)}  // optional, if you want
+              // no onDelete, no showDelete → delete button won't appear
               />
             ))}
           </div>
+
         </>
       )}
     </div>
