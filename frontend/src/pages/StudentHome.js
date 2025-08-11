@@ -19,18 +19,18 @@ export default function StudentHome() {
   const [file, setFile] = useState(null);
   const [submitted, setSubmitted] = useState(false);
 
-  // Fetch all materials on first load
+  //fetch all materials on first load
   useEffect(() => {
     fetch('http://88.200.63.148:9333/api/studymaterials')
       .then(res => res.json())
       .then(data => {
         setAllMaterials(data);
-        setResults(data); // initially display all
+        setResults(data); //initially display all
       })
       .catch(err => console.error('Error fetching all materials:', err));
   }, []);
 
-  // Fetch filtered results when searchTerm changes
+  //fetch filtered results when searchTerm changes
   useEffect(() => {
     if (!searchTerm) {
       setResults(allMaterials);
@@ -78,13 +78,11 @@ export default function StudentHome() {
       });
   };
 
-  // Handle open modal: fetch providers then show modal
   const handleOpenProvidersModal = () => {
     fetchProviders();
     setShowProvidersModal(true);
   };
 
-  // Handle close modal
   const handleCloseProvidersModal = () => {
     setShowProvidersModal(false);
     setProviders([]);
@@ -100,12 +98,10 @@ export default function StudentHome() {
     setShowDropdown(false);
   };
 
-  // Handle file input change
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -113,9 +109,6 @@ export default function StudentHome() {
       alert('Please upload your academic records file before submitting.');
       return;
     }
-
-    // Here you would normally send the file to your backend
-    // For this example, we just simulate submission success
     setSubmitted(true);
     setFile(null);
   };
@@ -124,7 +117,6 @@ export default function StudentHome() {
   return (
     <div className="student-home">
       <div className="button-group">
-        {/* Existing buttons */}
         <button
           onClick={() => {
             setShowApplyForm(true);
@@ -143,7 +135,6 @@ export default function StudentHome() {
           Show All Providers
         </button>
 
-        {/* New Logout button */}
         <button
           onClick={() => {
             window.location.href = 'http://88.200.63.148:3990/login';
@@ -180,7 +171,7 @@ export default function StudentHome() {
                   accept=".pdf,.doc,.docx,.jpg,.png"
                   onChange={handleFileChange}
                   required
-                  style={{ display: 'none' }} // hide the default input
+                  style={{ display: 'none' }} //hide the default input
                 />
                 <br />
                 <button type="submit" className="submit-btn">
@@ -271,8 +262,7 @@ export default function StudentHome() {
               <MaterialCard
                 key={idx}
                 material={item}
-                onClick={(mat) => console.log('Clicked:', mat)}  // optional, if you want
-              // no onDelete, no showDelete → delete button won't appear
+                onClick={(mat) => console.log('Clicked:', mat)} 
               />
             ))}
           </div>

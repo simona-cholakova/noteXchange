@@ -35,7 +35,7 @@ export default function ProviderProfile() {
             {/* Profile Picture */}
             {provider.picture_url && (
                 <img
-                    src={`${backendBaseURL}${provider.picture_url}`} // full path
+                    src={`${backendBaseURL}${provider.picture_url}`} 
                     alt={`${provider.provider_name} ${provider.provider_surname}`}
                 />
             )}

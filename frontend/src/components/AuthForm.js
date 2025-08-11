@@ -51,10 +51,9 @@ const AuthForm = () => {
                 }
 
             } else {
-                // Register the user
                 await register(formData);
 
-                // After successful registration, perform login automatically
+                //after successful registration, perform login automatically
                 const loginResponse = await login({
                     enrolment_id: formData.enrolment_id,
                     password: formData.password

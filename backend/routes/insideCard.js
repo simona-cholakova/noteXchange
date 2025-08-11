@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const dataPool = require('../DB/dbConn.js'); // your dataPool with DB functions
+const dataPool = require('../DB/dbConn.js'); 
 
 router.get('/material/:id', async (req, res) => {
   try {
-    // Use the dataPool function that already fetches material + provider info
     const material = await dataPool.getStudyMaterialById(req.params.id);
 
     if (!material) {

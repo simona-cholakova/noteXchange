@@ -5,7 +5,7 @@ export default function MyProfilePage() {
   const [profile, setProfile] = useState(null);
   const [aboutMe, setAboutMe] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
-  const [isEditingAboutMe, setIsEditingAboutMe] = useState(false); // start in view mode by default
+  const [isEditingAboutMe, setIsEditingAboutMe] = useState(false);
   const backendBaseURL = 'http://88.200.63.148:9333';
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function MyProfilePage() {
       .then(data => {
         setProfile(data);
         setAboutMe(data.about_me || '');
-        // auto-switch to edit mode if no about_me text
+        //auto-switch to edit mode if no about_me text
         if (!data.about_me) {
           setIsEditingAboutMe(true);
         }
@@ -36,8 +36,8 @@ export default function MyProfilePage() {
 
       const data = await res.json();
       if (res.ok) {
-        setProfile(prev => ({ ...prev, about_me: aboutMe })); // keep profile in sync
-        setIsEditingAboutMe(false); // back to view mode
+        setProfile(prev => ({ ...prev, about_me: aboutMe })); //keep profile in sync
+        setIsEditingAboutMe(false); //back to view mode
       } else {
         console.error(data.error || 'Failed to update');
       }

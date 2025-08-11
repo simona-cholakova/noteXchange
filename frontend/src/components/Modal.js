@@ -1,6 +1,5 @@
-// src/components/Modal.js
 import React from 'react';
-import '../styles/Modal.css'; // separate styles if you want
+import '../styles/Modal.css'; 
 
 export default function Modal({ title, onClose, children }) {
     return (

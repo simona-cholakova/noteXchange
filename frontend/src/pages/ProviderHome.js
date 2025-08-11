@@ -31,10 +31,10 @@ export default function ProviderHome() {
         course: ''
     });
 
-    // New state for user input of enrolment id
+    //state for user input of enrolment id
     const [inputEnrolmentId, setInputEnrolmentId] = useState('');
 
-    // Load provider info once on mount
+    //load provider info once on mount
     useEffect(() => {
         const enrolmentId = localStorage.getItem('provider_enrolment_id') || '';
         const fullName = localStorage.getItem('provider_name') || '';
@@ -48,21 +48,21 @@ export default function ProviderHome() {
         }));
     }, []);
 
-    // Fetch all materials on first load
+    //tofetch all materials on first load
     useEffect(() => {
         fetch('http://88.200.63.148:9333/api/studymaterials')
             .then(res => res.json())
             .then(data => {
                 setAllMaterials(data);
-                setResults(data); // initially show all materials
+                setResults(data); //initially show all materials
             })
             .catch(err => console.error('Error fetching all materials:', err));
     }, []);
 
-    // Fetch filtered results when searchTerm or selectedFilter changes
+    //fetch filtered results when searchTerm or selectedFilter changes
     useEffect(() => {
         if (!searchTerm) {
-            setResults(allMaterials); // show all if search is empty
+            setResults(allMaterials); //show all if search is empty
             return;
         }
 
@@ -92,7 +92,7 @@ export default function ProviderHome() {
     const handleFilterSelect = (filter) => {
         setSelectedFilter(filter);
         setSearchTerm('');
-        setResults(allMaterials); // reset to all materials on filter change
+        setResults(allMaterials); //reset to all materials on filter change
         setShowDropdown(false);
     };
 
@@ -107,7 +107,7 @@ export default function ProviderHome() {
 
             if (response.ok) {
                 alert(`Material ${materialId} deleted successfully.`);
-                // Remove deleted material from results and allMaterials state
+                //to  remove deleted material from results and allMaterials state
                 setResults(prev => prev.filter(m => m.id !== materialId && m.material_id !== materialId));
                 setAllMaterials(prev => prev.filter(m => m.id !== materialId && m.material_id !== materialId));
             } else {
@@ -128,7 +128,6 @@ export default function ProviderHome() {
         }));
     };
 
-    // New logout handler
     const handleLogout = async () => {
         try {
             const response = await fetch('http://88.200.63.148:9333/api/logout', {
@@ -146,7 +145,7 @@ export default function ProviderHome() {
         }
     };
 
-    // New function to fetch my materials by user input enrolment id
+    //function to fetch my materials by user input enrolment id
     const fetchMyMaterials = async () => {
         if (!inputEnrolmentId) {
             alert('Enter your enrolment ID');
@@ -264,7 +263,7 @@ export default function ProviderHome() {
                     <MaterialCard
                         key={idx}
                         material={item}
-                        onDelete={handleDelete}   // must provide onDelete function here!
+                        onDelete={handleDelete}   
                         showDelete={true}
                     />
                 ))}

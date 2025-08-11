@@ -3,10 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import '../styles/InsideCard.css';
 
 const InsideCard = () => {
-  const { id } = useParams(); // material_id from URL
+  const { id } = useParams(); //material_id from URL
   const [material, setMaterial] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [rating, setRating] = useState(null); // New state for rating
+  const [rating, setRating] = useState(null); 
 
   useEffect(() => {
     const fetchMaterial = async () => {
@@ -52,10 +52,8 @@ const InsideCard = () => {
     }
   };
 
-  // Handle rating button click
   const handleRatingClick = (value) => {
     setRating(value);
-    // Here you could send the rating to your server if needed
     console.log(`User rated: ${value}`);
   };
 
