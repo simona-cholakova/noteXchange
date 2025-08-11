@@ -16,7 +16,7 @@ let dataPool = {}
 dataPool.getUserById = (enrolment_id) => {
   return new Promise((resolve, reject) => {
     conn.query(
-      `SELECT enrolment_id, name, surname, email, username, role, picture_url 
+      `SELECT enrolment_id, name, surname, email, username, role, picture_url, about_me
        FROM User 
        WHERE TRIM(enrolment_id) = ?`,
       [enrolment_id.toString()],

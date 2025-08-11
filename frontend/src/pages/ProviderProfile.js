@@ -42,7 +42,7 @@ export default function ProviderProfile() {
 
             <h1>{provider.provider_name} {provider.provider_surname}</h1>
             <p><strong>Enrolment ID:</strong> {provider.provider_enrolment_id}</p>
-            <p><strong>About me:</strong>{provider.provider_about_me}</p>
+            <p><strong>About me: </strong>{provider.provider_about_me}</p>
             <p><strong>Email: </strong>
                 <a href={`mailto:${provider.email}`} className="provider-email">
                     {provider.provider_email}

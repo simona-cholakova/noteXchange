@@ -100,6 +100,25 @@ export default function ProviderHome() {
         }));
     };
 
+    // New logout handler
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('http://88.200.63.148:9333/api/logout', {
+                method: 'POST',
+                credentials: 'include',
+            });
+            if (response.ok) {
+                navigate('/login');
+            } else {
+                alert('Logout failed.');
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+            alert('Logout error');
+        }
+    };
+
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
@@ -141,6 +160,43 @@ export default function ProviderHome() {
             <Link to="/profile" className="profile-link">
                 My Profile
             </Link>
+
+            {/* New My Materials button */}
+            <button
+                onClick={async () => {
+                    try {
+                        const name = localStorage.getItem('provider_name') || '';
+                        const surname = localStorage.getItem('provider_surname') || '';
+
+                        const url = `http://88.200.63.148:9333/api/filters/provider?provider_name=${encodeURIComponent(name)}&provider_surname=${encodeURIComponent(surname)}`;
+                        console.log("Request URL:", url);
+
+                        const res = await fetch(url);
+                        if (!res.ok) throw new Error('Failed to fetch materials');
+
+                        const data = await res.json();
+                        console.log("My materials:", data);
+                        setResults(data);
+                    } catch (err) {
+                        console.error(err);
+                        alert('Error fetching your materials');
+                    }
+                }}
+                className="my-materials-button"
+                style={{ display: 'block', marginTop: '10px' }}
+            >
+                My Materials
+            </button>
+
+
+            {/* Logout button */}
+            <button
+                onClick={handleLogout}
+                className="logout-button"
+                style={{ display: 'block', marginTop: '10px' }}
+            >
+                Logout
+            </button>
 
             <h1>Provider Home Page</h1>
 
@@ -262,4 +318,5 @@ export default function ProviderHome() {
             )}
         </div>
     );
+
 }

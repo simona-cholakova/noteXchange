@@ -120,6 +120,7 @@ export default function StudentHome() {
     setFile(null);
   };
 
+  
   return (
     <div className="student-home">
       <div className="button-group">
@@ -136,13 +137,21 @@ export default function StudentHome() {
           Apply for Provider
         </button>
 
-        <Link to="/profile" className="my-profile-btn">
-          My Profile
-        </Link>
+        <Link to="/profile" className="my-profile-btn"><strong>My Profile</strong></Link>
 
-        {/* New button to open providers modal */}
         <button onClick={handleOpenProvidersModal} className="my-profile-btn">
           Show All Providers
+        </button>
+
+        {/* New Logout button */}
+        <button
+          onClick={() => {
+                window.location.href = 'http://88.200.63.148:3976/login';
+
+          }}
+          className="my-profile-btn logout-btn"
+        >
+          Logout
         </button>
       </div>
 
