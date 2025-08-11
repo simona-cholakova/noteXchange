@@ -15,6 +15,7 @@ const providerProfileRoutes = require('./routes/providerProfile');
 const allProvidersRoutes = require('./routes/allProviders');
 const path = require('path');  
 const multer = require('multer');
+const db = require('./DB/dbConn');
 
 const port = 9333;
 
@@ -59,7 +60,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', insideCardRoutes);
 app.use('/api', providerProfileRoutes);
 app.use('/api', allProvidersRoutes);
-
 
 app.get('/', (req, res) => {
   res.send('hola');

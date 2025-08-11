@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/ProviderHome.css';
 import MaterialCard from '../components/MaterialCard';
+import Modal from '../components/Modal';
 
 export default function ProviderHome() {
     const navigate = useNavigate();
@@ -11,6 +12,8 @@ export default function ProviderHome() {
     const [allMaterials, setAllMaterials] = useState([]); // <-- added
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedFilter, setSelectedFilter] = useState('Course');
+    const [showMyMaterials, setShowMyMaterials] = useState(false);
+    const [myMaterials, setMyMaterials] = useState([]);
 
     const [showForm, setShowForm] = useState(false);
 
@@ -27,6 +30,9 @@ export default function ProviderHome() {
         university: '',
         course: ''
     });
+
+    // New state for user input of enrolment id
+    const [inputEnrolmentId, setInputEnrolmentId] = useState('');
 
     // Load provider info once on mount
     useEffect(() => {
@@ -90,7 +96,29 @@ export default function ProviderHome() {
         setShowDropdown(false);
     };
 
-    // rest of your code unchanged...
+    const handleDelete = async (materialId) => {
+        if (!window.confirm(`Are you sure you want to delete material ID ${materialId}?`)) return;
+
+        try {
+            const response = await fetch(`http://88.200.63.148:9333/api/study-material/${materialId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                alert(`Material ${materialId} deleted successfully.`);
+                // Remove deleted material from results and allMaterials state
+                setResults(prev => prev.filter(m => m.id !== materialId && m.material_id !== materialId));
+                setAllMaterials(prev => prev.filter(m => m.id !== materialId && m.material_id !== materialId));
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to delete: ${errorData.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            alert(`Error deleting material: ${error.message}`);
+        }
+    };
+
 
     const handleFormChange = (e) => {
         const { name, value, files } = e.target;
@@ -118,6 +146,23 @@ export default function ProviderHome() {
         }
     };
 
+    // New function to fetch my materials by user input enrolment id
+    const fetchMyMaterials = async () => {
+        if (!inputEnrolmentId) {
+            alert('Please enter your provider enrolment ID');
+            return;
+        }
+        try {
+            const url = `http://88.200.63.148:9333/api/my-materials?provider_enrolment_id=${encodeURIComponent(inputEnrolmentId)}`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('Failed to fetch materials');
+            const data = await res.json();
+            setResults(data);
+        } catch (err) {
+            console.error(err);
+            alert('Error fetching your materials');
+        }
+    };
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -161,32 +206,15 @@ export default function ProviderHome() {
                 My Profile
             </Link>
 
-            {/* New My Materials button */}
-            <button
-                onClick={async () => {
-                    try {
-                        const name = localStorage.getItem('provider_name') || '';
-                        const surname = localStorage.getItem('provider_surname') || '';
-
-                        const url = `http://88.200.63.148:9333/api/filters/provider?provider_name=${encodeURIComponent(name)}&provider_surname=${encodeURIComponent(surname)}`;
-                        console.log("Request URL:", url);
-
-                        const res = await fetch(url);
-                        if (!res.ok) throw new Error('Failed to fetch materials');
-
-                        const data = await res.json();
-                        console.log("My materials:", data);
-                        setResults(data);
-                    } catch (err) {
-                        console.error(err);
-                        alert('Error fetching your materials');
-                    }
-                }}
-                className="my-materials-button"
-                style={{ display: 'block', marginTop: '10px' }}
-            >
-                My Materials
-            </button>
+            <div className="enrolment-input-container">
+                <input
+                    type="text"
+                    placeholder="Enter your provider enrolment ID"
+                    value={inputEnrolmentId}
+                    onChange={e => setInputEnrolmentId(e.target.value)}
+                />
+                <button onClick={fetchMyMaterials}>Fetch My Materials</button>
+            </div>
 
 
             {/* Logout button */}
@@ -237,32 +265,15 @@ export default function ProviderHome() {
                         key={idx}
                         material={item}
                         onClick={(mat) => console.log('Clicked:', mat)}
+                        onDelete={handleDelete}
                     />
                 ))}
             </div>
 
-            {showForm && (
-                <div
-                    className="modal-overlay"
-                    onClick={() => setShowForm(false)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => { if (e.key === 'Escape') setShowForm(false) }}
-                >
-                    <form
-                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside form
-                        onSubmit={handleFormSubmit}
-                        className="publish-form"
-                    >
-                        <button
-                            type="button"
-                            className="close-button"
-                            onClick={() => setShowForm(false)}
-                            aria-label="Close form"
-                        >
-                            &times;
-                        </button>
 
+            {showForm && (
+                <Modal title="Publish New Material" onClose={() => setShowForm(false)}>
+                    <form onSubmit={handleFormSubmit} className="publish-form">
                         <input
                             type="text"
                             name="provider_enrolment_id"
@@ -270,7 +281,6 @@ export default function ProviderHome() {
                             readOnly
                             hidden
                         />
-
                         <input
                             name="provider_name"
                             placeholder="Provider Name"
@@ -278,7 +288,6 @@ export default function ProviderHome() {
                             onChange={handleFormChange}
                             required
                         />
-
                         <input
                             name="provider_surname"
                             placeholder="Provider Surname"
@@ -286,7 +295,6 @@ export default function ProviderHome() {
                             onChange={handleFormChange}
                             required
                         />
-
                         {['title', 'description', 'academic_year', 'study_program', 'university', 'course'].map(field => (
                             <input
                                 key={field}
@@ -297,13 +305,11 @@ export default function ProviderHome() {
                                 required
                             />
                         ))}
-
                         <select name="type" value={formData.type} onChange={handleFormChange} required>
                             <option value="digital">Digital</option>
                             <option value="physical">Physical</option>
                             <option value="digital and physical">Digital and Physical</option>
                         </select>
-
                         <input
                             type="file"
                             name="file"
@@ -311,12 +317,26 @@ export default function ProviderHome() {
                             onChange={handleFormChange}
                             required
                         />
-
                         <button type="submit">Submit</button>
                     </form>
-                </div>
+                </Modal>
+            )}
+
+            {showMyMaterials && (
+                <Modal title="My Materials" onClose={() => setShowMyMaterials(false)}>
+                    {myMaterials.length > 0 ? (
+                        myMaterials.map((mat, idx) => (
+                            <MaterialCard
+                                key={idx}
+                                material={mat}
+                                onClick={(m) => console.log('Clicked my material:', m)}
+                            />
+                        ))
+                    ) : (
+                        <p>No materials found.</p>
+                    )}
+                </Modal>
             )}
         </div>
     );
-
 }

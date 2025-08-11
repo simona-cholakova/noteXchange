@@ -192,6 +192,7 @@ dataPool.logout = () => {
   })
 }
 
+
 dataPool.getAllStudyMaterials = () => {
   return new Promise((resolve, reject) => {
     const query = `SELECT material_id, title, description, provider_name, type, academic_year, study_program, university, created_at, course, provider_surname, provider_enrolment_id FROM StudyMaterial`;
@@ -219,6 +220,26 @@ dataPool.getUserData = async function (enrolmentNumber) {
     console.error('Error fetching user data:', err.message);
     return null;
   }
+};
+
+dataPool.getMaterialsByProviderEnrolmentId = (providerEnrolmentId) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT material_id, title, description, provider_name, type, academic_year, study_program, university, created_at, course, provider_surname, provider_enrolment_id FROM StudyMaterial WHERE TRIM(provider_enrolment_id) = ?';
+    conn.query(query, [providerEnrolmentId.toString()], (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+};
+
+dataPool.deleteStudyMaterialById = (material_id) => {
+  return new Promise((resolve, reject) => {
+    const query = `DELETE FROM StudyMaterial WHERE material_id = ?`;
+    conn.query(query, [material_id], (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
 };
 
 // ----SEARCH FUNCTIONS FOR THE FILTER----
