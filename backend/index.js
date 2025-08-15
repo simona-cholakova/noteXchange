@@ -13,6 +13,7 @@ const multerRoutes = require('./routes/multer');
 const insideCardRoutes = require('./routes/insideCard');
 const providerProfileRoutes = require('./routes/providerProfile');
 const allProvidersRoutes = require('./routes/allProviders');
+const ratingRoutes = require('./routes/rating');
 const path = require('path');  
 const multer = require('multer');
 const db = require('./DB/dbConn');
@@ -48,6 +49,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', insideCardRoutes);
 app.use('/api', providerProfileRoutes);
 app.use('/api', allProvidersRoutes);
+app.use('/api', ratingRoutes);
 
 app.get('/', (req, res) => {
   res.send('hola');

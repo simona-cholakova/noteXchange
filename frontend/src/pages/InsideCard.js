@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';  
+import { useParams, Link } from 'react-router-dom';
 import '../styles/InsideCard.css';
 
 const InsideCard = () => {
   const { id } = useParams(); //material_id from URL
   const [material, setMaterial] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [rating, setRating] = useState(null); 
+  const [rating, setRating] = useState(null);
 
   useEffect(() => {
     const fetchMaterial = async () => {
@@ -52,15 +52,40 @@ const InsideCard = () => {
     }
   };
 
-  const handleRatingClick = (value) => {
+  const handleRatingClick = async (value) => {
     setRating(value);
-    console.log(`User rated: ${value}`);
+
+    const loggedInUserId = localStorage.getItem('provider_enrolment_id'); // or from your auth state/context
+
+    try {
+      const res = await fetch('http://88.200.63.148:9333/api/ratings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: loggedInUserId,
+          material_id: id, // from useParams
+          rating_value: value,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Failed to submit rating');
+
+      const data = await res.json();
+      console.log('Rating saved:', data);
+      alert('Thanks for your rating!');
+    } catch (err) {
+      console.error('Error submitting rating:', err);
+      alert('Failed to save rating.');
+    }
   };
+
 
   if (loading) return <p>Loading...</p>;
   if (!material) return <p>Material not found.</p>;
 
-  return(
+  return (
     <div className="inside-card-container">
       <h1>{material.title}</h1>
       <p>
@@ -106,6 +131,7 @@ const InsideCard = () => {
         </div>
         {rating && <p>You rated: {rating} / 10</p>}
       </div>
+
     </div>
   );
 };

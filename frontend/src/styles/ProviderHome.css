@@ -1077,3 +1077,89 @@ h1 {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
+
+/* Ratings Button Styles */
+.ratings-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: #4a5568;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  display: block;
+  margin: 1rem auto 0; /* positions it below the profile button */
+  text-align: center;
+}
+
+.ratings-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 1);
+  color: #2d3748;
+}
+
+.button-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.button-inline {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.enrolment-input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.enrolment-input-container input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.enrolment-input-container button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Optional: Make buttons consistent height */
+.button-inline button,
+.button-inline .profile-link {
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center; /* vertically center items */
+    gap: 10px;           /* space between items */
+    flex-wrap: wrap;      /* wrap on small screens */
+    margin-bottom: 20px;
+}
+
+.top-bar .enrolment-input-container {
+    display: flex;
+    gap: 5px;
+}

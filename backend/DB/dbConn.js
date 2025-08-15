@@ -241,6 +241,53 @@ dataPool.deleteStudyMaterialById = (material_id) => {
     });
   });
 };
+dataPool.getMyRatings = (provider_enrolment_id) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT m.material_id, m.title, m.description, m.course, m.university, r.rating_value
+      FROM StudyMaterial m
+      LEFT JOIN Rating r ON m.material_id = r.material_id
+      WHERE m.provider_enrolment_id = ?;
+    `;
+
+    conn.query(query, [provider_enrolment_id], (err, results) => {
+      if (err) return reject(err);
+
+      const grouped = results.reduce((acc, row) => {
+        if (!acc[row.material_id]) {
+          acc[row.material_id] = {
+            material_id: row.material_id,
+            title: row.title,
+            description: row.description,
+            course: row.course,
+            university: row.university,
+            ratings: []
+          };
+        }
+        if (row.rating_value !== null) {
+          acc[row.material_id].ratings.push(row.rating_value);
+        }
+        return acc;
+      }, {});
+
+      resolve(Object.values(grouped));
+    });
+  });
+};
+
+dataPool.addRating = (user_id, material_id, rating_value) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      INSERT INTO Rating (user_id, material_id, rating_value)
+      VALUES (?, ?, ?)
+    `;
+
+    conn.query(query, [user_id, material_id, rating_value], (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+};
 
 // ----SEARCH FUNCTIONS FOR THE FILTER----
 

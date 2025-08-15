@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/ProviderHome.css';
 import MaterialCard from '../components/MaterialCard';
+import MyRatingsButton from "../components/MyRatings";
 import Modal from '../components/Modal';
 
 export default function ProviderHome() {
@@ -9,11 +10,13 @@ export default function ProviderHome() {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
-    const [allMaterials, setAllMaterials] = useState([]); // <-- added
+    const [allMaterials, setAllMaterials] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedFilter, setSelectedFilter] = useState('Course');
     const [showMyMaterials, setShowMyMaterials] = useState(false);
     const [myMaterials, setMyMaterials] = useState([]);
+    const [myRatings, setMyRatings] = useState([]);
+    const [showRatings, setShowRatings] = useState(false);
 
     const [showForm, setShowForm] = useState(false);
 
@@ -163,6 +166,31 @@ export default function ProviderHome() {
         }
     };
 
+    const fetchMyRatings = async () => {
+        try {
+            const enrolmentId = localStorage.getItem('provider_enrolment_id');
+            if (!enrolmentId) {
+                alert('You are not logged in.');
+                return;
+            }
+
+            const res = await fetch(
+                `http://88.200.63.148:9333/api/my-ratings?provider_enrolment_id=${encodeURIComponent(enrolmentId)}`,
+                { credentials: 'include' }
+            );
+
+            if (!res.ok) throw new Error('Failed to fetch ratings');
+
+            const data = await res.json();
+            setMyRatings(data);
+            setShowRatings(true);
+        } catch (err) {
+            console.error(err);
+            alert('Error fetching ratings');
+        }
+    };
+
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
@@ -200,10 +228,13 @@ export default function ProviderHome() {
     };
 
     return (
+        
         <div className="container">
             <Link to="/profile" className="profile-link">
                 My Profile
             </Link>
+
+            <button onClick={fetchMyRatings} className="ratings-btn">My Ratings</button>
 
             <div className="enrolment-input-container">
                 <input
@@ -263,7 +294,7 @@ export default function ProviderHome() {
                     <MaterialCard
                         key={idx}
                         material={item}
-                        onDelete={handleDelete}   
+                        onDelete={handleDelete}
                         showDelete={true}
                     />
                 ))}
@@ -337,6 +368,23 @@ export default function ProviderHome() {
                     )}
                 </Modal>
             )}
+            {showRatings && (
+                <Modal title="My Ratings" onClose={() => setShowRatings(false)}>
+                    {myRatings.length === 0 ? (
+                        <p>No ratings yet.</p>
+                    ) : (
+                        <ul>
+                            {myRatings.map((r, idx) => (
+                                <li key={idx}>
+                                    Material ID: {r.material_id}, Ratings: {r.ratings.join(', ')}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </Modal>
+            )}
+
+
         </div>
     );
 }
